@@ -25,7 +25,7 @@
 | :---: | :--- | :---: | :---: | :--- |
 | 1 *(52)* | **Trần Hoàng Hôn** | `26410046` | Nhóm 11 *(NT)* | **Trưởng nhóm / PM & Kiến trúc Đồ thị TP.HCM:** Điều phối tiến độ chung, trích xuất và chuẩn hóa cấu trúc đồ thị mạng lưới đường TP.HCM (`OSMnx` – khu vực Hàng Xanh/Bình Thạnh), viết Phần Mở đầu + Chương 1 & biên tập quyển Báo cáo $\ge 40$ trang (Word + PDF). |
 | 2 *(55)* | **Nguyễn Duy Khang** | `26410055` | Nhóm 11 | **Kỹ sư Xử lý Phân tán & Thuật toán Big Data:** Thiết kế pipeline phân tán **Apache Spark (PySpark)** và định dạng **Parquet**; cài đặt & đối chứng thuật toán tìm kiếm láng giềng quy mô lớn (**KNN vét cạn** vs. **LSH** vs. **ANN FAISS**), viết **Chương 2 (> 13 trang)**. |
-| 3 *(70)* | **Phạm Thành Trung** | `26410141` | Nhóm 11 | **Kỹ sư Thu thập & Tiền xử lý GIGO:** Nạp và quản trị bộ dữ liệu `METR-LA` ($\sim 7.1\text{M}$ dòng) & `PEMS-BAY` ($\sim 17\text{M}$ dòng); xây dựng module thu thập API thời tiết `Open-Meteo`; cài đặt pipeline làm sạch **GIGO** (Imputation, IQR/Z-score, Min-Max/Z-score, OLS tương quan), viết phần **Dữ liệu & Kịch bản Tiền xử lý (Chương 3)**. |
+| 3 *(70)* | **Phạm Thành Trung** | `26410141` | Nhóm 11 | **Kỹ sư Thu thập & Tiền xử lý GIGO:** Nạp và quản trị `METR-LA` / `PEMS-BAY`, thu thập thời tiết `Open-Meteo`, kiểm toán và làm sạch GIGO; thực hiện OLS chỉ khi đầu vào giao thông và thời tiết khớp cả không gian lẫn thời gian; viết phần **Dữ liệu & Kịch bản Tiền xử lý (Chương 3)**. |
 | 4 *(47)* | **Vũ Văn Duy** | `26410031` | Nhóm 11 | **Kỹ sư Benchmark Hiệu năng & Trực quan hóa:** Thực hiện kịch bản đo kiểm tài nguyên (**Pandas vs. PySpark** qua các mốc $1\text{M} \to 17\text{M}$ dòng); xây dựng **Web Dashboard trực quan** (`Streamlit/Folium`); hoàn thiện **Chương 3 (> 13 trang)**, Slide 26 trang & điều phối Video demo. |
 
 ---
@@ -90,7 +90,7 @@ Xây dựng hoàn chỉnh một **pipeline phân tích dữ liệu lớn phân t
 1. **Xử lý Phân tán & Chuẩn hóa GIGO Quy mô 1M–17M Dòng:** Vận hành pipeline **PySpark + Columnar Parquet** xử lý sạch $100\%$ giá trị `0`/khuyết thiếu cảm biến, loại bỏ ngoại lai (IQR/Z-score) và chuẩn hóa đa biến không tràn bộ nhớ.
 2. **Định lượng Hiệu năng Hệ thống (Pandas vs. PySpark):** Thiết lập thực nghiệm đối chứng thời gian xử lý (*Wall-clock Time*), mức tiêu thụ RAM (*Peak RAM*) và hệ số tăng tốc (*Speedup*) ở các lát cắt $1\text{M}, 5\text{M}, 10\text{M}, 17\text{M}$ dòng.
 3. **Làm chủ Thuật toán Tìm kiếm Tương đồng Lớn (KNN vs. LSH vs. ANN FAISS):** Chứng minh bằng lý thuyết và thực nghiệm sự đánh đổi giữa tốc độ truy vấn (*Query Latency*) và độ chính xác (*Recall@K*) khi tìm kiếm mẫu hình ùn tắc trên không gian triệu vector.
-4. **Trực quan hóa Case Study TP.HCM & Hoàn thiện Hồ sơ Chuẩn Học thuật:** Triển khai Web Dashboard (`Streamlit/Folium`) phân tích nút giao Hàng Xanh kết hợp API thời tiết `Open-Meteo` (hồi quy OLS/tương quan), hoàn chỉnh quyển Báo cáo $\ge 40$ trang, 26 Slides và 2 Video nộp **TS. Hà Minh Tân**.
+4. **Trực quan hóa Case Study TP.HCM & Hoàn thiện Hồ sơ Chuẩn Học thuật:** Triển khai Web Dashboard (`Streamlit/Folium`) hiển thị đồ thị Hàng Xanh và thời tiết `Open-Meteo`. Chỉ thực hiện OLS mưa–tốc độ trên dữ liệu giao thông và thời tiết đã ghép đúng khu vực, kỳ quan sát, đơn vị và tần suất; nếu chưa có tốc độ Hàng Xanh thì không suy luận quan hệ tại TP.HCM. Hoàn chỉnh quyển Báo cáo $\ge 40$ trang, 26 Slides và 2 Video nộp **TS. Hà Minh Tân**.
 
 ---
 
@@ -102,7 +102,7 @@ Xây dựng hoàn chỉnh một **pipeline phân tích dữ liệu lớn phân t
   * *Điền khuyết (Imputation):* Nội suy tuyến tính chuỗi thời gian và `Forward-fill` giới hạn cửa sổ theo từng mã cảm biến/cạnh đồ thị.
   * *Phát hiện ngoại lai:* Khoảng tứ phân vị **IQR** ($[Q_1 - 1.5\cdot IQR, Q_3 + 1.5\cdot IQR]$) và ngưỡng vật lý vận tốc giao thông.
   * *Chuẩn hóa thang đo:* **Min-Max Scaling** $x' = \frac{x - x_{\min}}{x_{\max} - x_{\min}}$ và **Z-score Standardization** $z = \frac{x - \mu}{\sigma}$.
-  * *Hồi quy tuyến tính OLS (*Ordinary Least Squares*):* Cực tiểu hóa tổng bình phương sai số $SSE = \sum (y_i - \hat{y}_i)^2$ và đánh giá $R^2$ để định lượng mối quan hệ giữa lượng mưa (`Open-Meteo`) với tốc độ lưu thông.
+  * *Hồi quy tuyến tính OLS (*Ordinary Least Squares*):* Cực tiểu hóa tổng bình phương sai số $SSE = \sum (y_i - \hat{y}_i)^2$ và đánh giá $R^2$ trên các cặp mưa–tốc độ đã ghép cùng địa điểm, thời điểm và tần suất. Không ghép thời tiết Hàng Xanh với `METR-LA`/`PEMS-BAY`, vì hai bộ cảm biến thuộc California và có giai đoạn quan sát khác.
 * **Biểu diễn Đồ thị Không–Thời gian $G = (V, E, W)$:**
   * Xây dựng ma trận kề trọng số dựa trên khoảng cách mạng lưới đường bộ theo hàm nhân Gaussian chuẩn hóa:
     $$W_{ij} = \begin{cases} \exp\left(-\dfrac{\text{dist}(v_i, v_j)^2}{\sigma^2}\right), & \text{nếu } \text{dist}(v_i, v_j) \le \kappa \text{ và } \exp(\cdot) \ge \epsilon \\ 0, & \text{ngược lại} \end{cases}$$
@@ -118,7 +118,7 @@ Xây dựng hoàn chỉnh một **pipeline phân tích dữ liệu lớn phân t
 #### 6 Nội dung thực hiện chính:
 * **Nội dung 1: Khảo sát lý thuyết, thu thập & phân tích dữ liệu đa nguồn (`METR-LA`, `PEMS-BAY`, `OSMnx`, `Open-Meteo`)**
   * *Thực hiện cái gì:* Tải và kiểm tra schema tập `METR-LA` ($\sim 7.1\text{M}$ dòng) và `PEMS-BAY` ($\sim 17\text{M}$ dòng); trích xuất đồ thị `OSMnx` cụm Hàng Xanh TP.HCM và dữ liệu lịch sử mưa/độ ẩm từ `Open-Meteo`.
-  * *Thực hiện như thế nào:* Sử dụng Python (`h5py`, `osmnx`, `requests`, `pyspark`) chuyển đổi sang cấu trúc lưu trữ cột **Parquet**.
+  * *Thực hiện như thế nào:* Giữ CSV nguồn, chuẩn hóa ma trận thời gian × cảm biến sang Parquet bằng `pandas`/`pyarrow`; dùng `osmnx` cho đồ thị và `requests` cho API, sau đó nạp Parquet vào Spark.
   * *Dự kiến kết quả:* Kho dữ liệu thô chuẩn hóa và báo cáo kiểm toán chất lượng ban đầu (EDA).
 * **Nội dung 2: Thiết kế Pipeline Tiền xử lý GIGO phân tán trên Apache Spark**
   * *Thực hiện cái gì:* Xử lý triệt để cảm biến báo `0`/`NaN`, lọc ngoại lai IQR, chuẩn hóa Min-Max/Z-score và tạo vector cửa sổ trượt không–thời gian.
@@ -133,7 +133,7 @@ Xây dựng hoàn chỉnh một **pipeline phân tích dữ liệu lớn phân t
   * *Thực hiện như thế nào:* Thực nghiệm đối chiếu **KNN vét cạn**, **MinHash/Random Projection LSH** (PySpark/Python) và **FAISS (`IndexFlatL2`, `IVF-PQ`, `HNSW`)**.
   * *Dự kiến kết quả:* Đường cong đánh đổi (*Trade-off curves*) giữa `Query Latency (ms)`, `Recall@K` và `Memory Footprint`.
 * **Nội dung 5: Case Study Đồ thị TP.HCM + Thời tiết & Web Dashboard Trực quan**
-  * *Thực hiện cái gì:* Mô hình hóa đồ thị Hàng Xanh (`OSMnx`), kiểm định tương quan OLS giữa lượng mưa `Open-Meteo` và mức suy giảm vận tốc đô thị; đóng gói giao diện Web tương tác.
+  * *Thực hiện cái gì:* Mô hình hóa đồ thị Hàng Xanh (`OSMnx`) và hiển thị thời tiết `Open-Meteo` như bối cảnh địa phương. OLS tại TP.HCM chỉ được báo cáo nếu thu thập được chuỗi tốc độ Hàng Xanh đồng địa điểm và đồng thời gian; nếu không, không đưa ra kết luận định lượng mưa–tốc độ cho TP.HCM.
   * *Thực hiện như thế nào:* Xây dựng ứng dụng **Streamlit + Folium** hiển thị bản đồ mạng lưới, biểu đồ Benchmark Spark/LSH/ANN và kịch bản tra cứu điểm nghẽn Hàng Xanh.
   * *Dự kiến kết quả:* Web Dashboard chạy trực tiếp phục vụ quay Video Demo code 10–15 phút.
 * **Nội dung 6: Biên tập Quyển Báo cáo $> 40$ trang, Slide $25\text{–}30$ trang & Video Thuyết trình**
@@ -152,7 +152,7 @@ Xây dựng hoàn chỉnh một **pipeline phân tích dữ liệu lớn phân t
 
 ### 5. Giới hạn của đề tài
 
-* **Giới hạn phạm vi dữ liệu thực nghiệm:** Lõi kiểm thử quy mô lớn sử dụng dữ liệu cảm biến thực tế **`METR-LA`** ($\sim 7.1\text{M}$ dòng) và **`PEMS-BAY`** ($\sim 17\text{M}$ dòng); phần **Case Study TP.HCM** tập trung tại khu vực **Cụm Ngã tư Hàng Xanh – Bình Thạnh** (`OSMnx` + `Open-Meteo` lịch sử/hiện tại) nhằm trực quan hóa ứng dụng thực tiễn do tại Việt Nam chưa có bộ dữ liệu cảm biến vòng từ 24/7 công khai quy mô tương đương.
+* **Giới hạn phạm vi dữ liệu thực nghiệm:** Lõi kiểm thử quy mô lớn sử dụng dữ liệu cảm biến thực tế **`METR-LA`** ($\sim 7.1\text{M}$ dòng) và **`PEMS-BAY`** ($\sim 17\text{M}$ dòng); phần **Case Study TP.HCM** tập trung tại khu vực **Cụm Ngã tư Hàng Xanh – Bình Thạnh** (`OSMnx` + `Open-Meteo`) để trực quan hóa mạng đường và bối cảnh thời tiết. Do chưa có chuỗi tốc độ giao thông Hàng Xanh công khai trong repo, không ghép dữ liệu thời tiết TP.HCM với tốc độ California và không tuyên bố kết quả OLS mưa–tốc độ tại TP.HCM khi thiếu dữ liệu cùng địa điểm/kỳ.
 * **Giới hạn hạ tầng thực thi:** Cụm xử lý phân tán **Apache Spark (PySpark)** và thư viện **FAISS** được triển khai trên **Google Colab / Docker cục bộ đa lõi CPU**, mô phỏng cơ chế phân vùng Parquet và Catalyst Optimizer mà không đòi hỏi cụm máy chủ đám mây trả phí.
 * **Giới hạn phạm vi môn học:** Đề tài tập trung chuyên sâu vào kỹ thuật **Dữ liệu lớn (5V, PySpark phân tán, Parquet, Tiền xử lý GIGO, Benchmark tài nguyên, Tìm kiếm láng giềng LSH/ANN và trực quan hóa)** đúng trọng tâm môn *Phân tích dữ liệu lớn*.
 
@@ -182,7 +182,7 @@ Xây dựng hoàn chỉnh một **pipeline phân tích dữ liệu lớn phân t
 | **Tuần 4** | `11/11 – 17/11/2026` | • Chốt Đề cương chi tiết & cập nhật Hàng 33 `Final_Project.xlsx` trình TS. Hà Minh Tân.<br>• Tải & kiểm tra schema `METR-LA`, `PEMS-BAY` ($\sim 7\text{M} - 17\text{M}$ dòng).<br>• Cào đồ thị `OSMnx` TP.HCM (cụm Hàng Xanh) & API thời tiết `Open-Meteo`. | **Trần Hoàng Hôn** *(NT)*<br>**Phạm Thành Trung**<br>**Nguyễn Duy Khang**<br>**Vũ Văn Duy** | • `De_Cuong_Chi_Tiet...` & `Ke_Hoach...xlsx`<br>• Dữ liệu thô chuẩn bị sẵn sàng + File đồ thị TP.HCM | **0%** |
 | **Tuần 5** | `18/11 – 24/11/2026` | • Triển khai pipeline **PySpark** chuyển đổi dữ liệu sang **Parquet** & thực thi làm sạch **GIGO** (Imputation giá trị 0/NaN, khử ngoại lai IQR, chuẩn hóa Min-Max/Z-score).<br>• Viết hoàn chỉnh **Mở đầu & Chương 1** (Tổng quan, 5V, Trích dẫn TLTK & Research Gap). | **Phạm Thành Trung**<br>**Nguyễn Duy Khang**<br>**Trần Hoàng Hôn** | • Notebook/Script PySpark GIGO & dữ liệu sạch Parquet<br>• Toàn văn Mở đầu + Chương 1 (~10–12 trang) | **0%** |
 | **Tuần 6** | `25/11 – 01/12/2026` | • Hoàn thành bài thi **Giữa kỳ viết tay 90 phút** trên lớp.<br>• Chạy thực nghiệm **Benchmark tài nguyên (Pandas vs. PySpark)** qua các mốc $1\text{M} \to 5\text{M} \to 10\text{M} \to 17\text{M}$ dòng.<br>• Viết **Chương 2 (> 13 trang)** trình bày cơ sở toán học Spark, GIGO, OLS, Đồ thị & LSH/ANN. | **Vũ Văn Duy**<br>**Nguyễn Duy Khang**<br>**Trần Hoàng Hôn** | • Bộ biểu đồ & bảng số liệu Benchmark Pandas vs. Spark<br>• Toàn văn Chương 2 (> 13 trang) | **0%** |
-| **Tuần 7** | `02/12 – 08/12/2026` | • Cài đặt và thực nghiệm đối chứng **KNN vét cạn vs. LSH vs. ANN (FAISS)** (`Recall@K`, `Latency ms`, `RAM`).<br>• Triển khai **Case Study TP.HCM (`OSMnx` + `Open-Meteo` OLS)**.<br>• Viết **Chương 3 (> 13 trang)** phân tích sâu các kịch bản thực nghiệm. | **Nguyễn Duy Khang**<br>**Phạm Thành Trung**<br>**Vũ Văn Duy** | • Notebook đối chứng KNN/LSH/ANN + Case Study TP.HCM<br>• Toàn văn Chương 3 (> 13 trang) | **0%** |
+| **Tuần 7** | `02/12 – 08/12/2026` | • Cài đặt và thực nghiệm đối chứng **KNN vét cạn vs. LSH vs. ANN (FAISS)** (`Recall@K`, `Latency ms`, `RAM`).<br>• Triển khai **Case Study TP.HCM (`OSMnx` + `Open-Meteo`)**; chỉ phân tích OLS khi có dữ liệu giao thông–thời tiết được ghép đúng địa điểm và thời gian.<br>• Viết **Chương 3 (> 13 trang)** phân tích sâu các kịch bản thực nghiệm. | **Nguyễn Duy Khang**<br>**Phạm Thành Trung**<br>**Vũ Văn Duy** | • Notebook đối chứng KNN/LSH/ANN + Case Study TP.HCM<br>• Toàn văn Chương 3 (> 13 trang) | **0%** |
 | **Tuần 8** | `09/12 – 15/12/2026` | • Xây dựng **Web Dashboard (`Streamlit/Folium`)** trực quan hóa bản đồ Hàng Xanh, chuỗi thời gian và kết quả Benchmark.<br>• Đóng gói mã nguồn sạch trên repo, hoàn chỉnh bản thảo **Quyển Báo cáo $\ge 40$ trang** + Kết luận + TLTK IEEE. | **Cả nhóm 4 thành viên**<br>*(Trần Hoàng Hôn điều phối)* | • Web Dashboard chạy ổn định<br>• Bản thảo Quyển Báo cáo $\ge 40$ trang hoàn chỉnh | **0%** |
 | **Tuần 9** | `16/12 – 20/12/2026` | • Xuất **Word + PDF đồng nhất 100%** (> 40 trang), kiểm tra định dạng chuẩn CITD.<br>• Hoàn thiện **Slide 25–30 trang** (theo khung 26 slide).<br>• Quay **Video Demo Code (10–15p)** & **Video Trình bày đủ 4 người (20–30p)** nộp Google Drive lớp. | **Cả nhóm 4 thành viên** | • **HOÀN TẤT 100% HỒ SƠ NỘP TS. HÀ MINH TÂN** *(Word, PDF, PPTX, Code+Data, 2 Videos)* | **0%** |
 
