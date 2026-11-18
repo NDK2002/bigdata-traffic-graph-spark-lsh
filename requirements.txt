@@ -10,15 +10,21 @@
 # ==============================================================================
 
 # --- Tính toán phân tán & Định dạng lưu trữ cột (Tuần 4–7) ---
-pyspark>=3.5.0
+# PySpark 3.5.x: khớp Colab, chạy được JDK 11/17 và tương thích HDFS Hadoop 3.3.x ([K1]).
+pyspark>=3.5.0,<4.0
 pyarrow>=15.0.0
 fastparquet>=2024.2.0
+# Python 3.12 đã bỏ distutils; PySpark 3.5 vẫn import nó khi chuyển đổi pandas <-> Spark qua Arrow.
+setuptools>=70.0.0
 
 # --- Nạp dữ liệu thô, Xử lý số học & Kết nối API (Tuần 4–5) ---
 numpy>=1.26.0,<2.3.0
-pandas>=2.2.0
+# PySpark 3.5 chưa hỗ trợ pandas 3.x (kiểm chứng tại [K1]).
+pandas>=2.2.0,<3.0
 scipy>=1.12.0
 h5py>=3.10.0
+# metr-la.h5 / pems-bay.h5 (DCRNN) là pandas HDFStore -> pd.read_hdf cần PyTables.
+tables>=3.9.0
 requests>=2.31.0
 python-dotenv>=1.0.0
 
