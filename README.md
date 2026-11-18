@@ -14,7 +14,7 @@
 | :---: | :--- | :---: | :--- |
 | 1 *(52)* | **Trần Hoàng Hôn** *(NT)* | `26410046` | Trưởng nhóm / PM, Kiến trúc đồ thị `OSMnx` TP.HCM, Mở đầu + Chương 1 & biên tập Báo cáo $\ge 40$ trang |
 | 2 *(55)* | **Nguyễn Duy Khang** | `26410055` | Kỹ sư **Apache Spark (PySpark) / Parquet** & Thuật toán tìm kiếm lớn (**KNN vs. LSH vs. ANN FAISS**), Chương 2 (`> 13` trang) |
-| 3 *(70)* | **Phạm Thành Trung** | `26410141` | Kỹ sư Dữ liệu (`METR-LA`, `PEMS-BAY`, `Open-Meteo`) & Pipeline tiền xử lý **GIGO** + OLS tương quan |
+| 3 *(70)* | **Phạm Thành Trung** | `26410141` | Kỹ sư Dữ liệu (`METR-LA`, `PEMS-BAY`, `Open-Meteo`) & Pipeline tiền xử lý **GIGO**; OLS chỉ với dữ liệu giao thông–thời tiết khớp địa điểm và thời gian |
 | 4 *(47)* | **Vũ Văn Duy** | `26410031` | Kỹ sư **Benchmark Pandas vs. PySpark (`1M–17M` dòng)**, **Web Dashboard (`Streamlit/Folium`)** & Slide/Video |
 
 ---
@@ -44,8 +44,12 @@ Toàn bộ biểu mẫu tuân thủ chuẩn văn bản CITD/UIT và đáp ứng 
           ▼                                                                                          ▼
 [ BENCHMARK HIỆU NĂNG (1M -> 17M DÒNG) ]                                       [ TRUY VẤN LỚN & TRỰC QUAN HÓA ]
 • Pandas đơn máy vs. PySpark phân tán                                          • KNN vét cạn vs. LSH vs. ANN (FAISS)
-• Wall-clock Time, Peak RAM, Speedup                                           • Case Study TP.HCM (OLS Mưa) + Dashboard
+• Wall-clock Time, Peak RAM, Speedup                                           • Case Study TP.HCM (đồ thị + bối cảnh thời tiết) + Dashboard
 ```
+
+> **Ghép dữ liệu để phân tích OLS:** Không ghép thời tiết Hàng Xanh với METR-LA/PEMS-BAY tại California. Hồi quy mưa–tốc độ chỉ hợp lệ khi dữ liệu cùng khu vực và kỳ quan sát; nếu chưa có tốc độ Hàng Xanh thì dashboard chỉ trình bày thời tiết như bối cảnh GIS.
+
+Nguồn và cách tái tạo dữ liệu được ghi tại [01_data_ingestion/data_sources.md](01_data_ingestion/data_sources.md). CSV nguồn được giữ trong `data/raw/`; Parquet long-format phục vụ xử lý nằm trong `data/interim/` và được tạo bằng [convert_traffic_to_parquet.py](01_data_ingestion/convert_traffic_to_parquet.py).
 
 ---
 
