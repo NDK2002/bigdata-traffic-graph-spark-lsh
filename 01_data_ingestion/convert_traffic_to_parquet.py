@@ -13,7 +13,7 @@ import pyarrow.parquet as pq
 SCHEMA = pa.schema([
     ("timestamp", pa.timestamp("ns")),
     ("sensor_id", pa.string()),
-    ("speed_mph", pa.float64()),
+    ("speed", pa.float64()),
 ])
 
 
