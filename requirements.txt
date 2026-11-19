@@ -23,8 +23,6 @@ numpy>=1.26.0,<2.3.0
 pandas>=2.2.0,<3.0
 scipy>=1.12.0
 h5py>=3.10.0
-# metr-la.h5 / pems-bay.h5 (DCRNN) là pandas HDFStore -> pd.read_hdf cần PyTables.
-tables>=3.9.0
 requests>=2.31.0
 python-dotenv>=1.0.0
 

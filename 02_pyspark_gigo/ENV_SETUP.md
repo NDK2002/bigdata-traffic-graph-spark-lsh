@@ -45,6 +45,6 @@ python 02_pyspark_gigo/spark_env_check.py --hdfs             # + HDFS (cần HAD
 ```python
 !apt-get -qq install -y openjdk-17-jdk-headless > /dev/null
 import os; os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-17-openjdk-amd64"
-!pip -q install "pyspark>=3.5,<4.0" "pandas>=2.2,<3.0" setuptools pyarrow faiss-cpu psutil h5py tables
+!pip -q install "pyspark>=3.5,<4.0" "pandas>=2.2,<3.0" setuptools pyarrow faiss-cpu psutil
 !python 02_pyspark_gigo/spark_env_check.py
 ```
