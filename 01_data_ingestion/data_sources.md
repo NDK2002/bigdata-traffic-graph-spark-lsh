@@ -5,7 +5,7 @@
 - Bản dữ liệu dùng trong repo: các CSV công khai trong [Zenodo record 5146275](https://zenodo.org/records/5146275), phát hành với giấy phép CC BY 4.0. Script tải: `download_traffic_datasets.py`.
 - METR-LA có 34.272 mốc thời gian × 207 cảm biến; PEMS-BAY có 52.116 × 325. CSV gốc là ma trận rộng, mỗi hàng là một thời điểm 5 phút và mỗi cột là một cảm biến.
 - Tọa độ 207 cảm biến METR-LA và adjacency METR-LA lấy từ repo [DCRNN của Li et al.](https://github.com/liyaguang/DCRNN/tree/602afd9d767d3aa1c9b3eac51710d6aeee12c227), ghim ở commit `602afd9d767d3aa1c9b3eac51710d6aeee12c227`. PEMS-BAY metadata và adjacency lấy cùng Zenodo record.
-- CSV được giữ nguyên tại `data/raw/`. Bản Parquet chuẩn hóa nằm tại `data/interim/`, dạng dài với `timestamp`, `sensor_id`, `speed` và nén Snappy. Không commit file dữ liệu vào Git.
+- CSV được giữ nguyên tại `data/raw/`. Bản Parquet chuẩn hóa nằm tại `data/interim/`, dạng dài với `timestamp` độ phân giải microsecond (`timestamp[us]`), `sensor_id`, `speed` và nén Snappy để tương thích Spark. Không commit file dữ liệu vào Git.
 - Tài liệu gốc DCRNN dùng định dạng HDF5 cho chuỗi vận tốc. Bản đã tải ở đây là bản CSV tương thích về ma trận thời gian × cảm biến; vì pipeline nhóm dùng Parquet nên không tạo thêm bước HDF5 trung gian.
 
 ## Thời tiết Hàng Xanh
