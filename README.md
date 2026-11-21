@@ -49,7 +49,7 @@ Toàn bộ biểu mẫu tuân thủ chuẩn văn bản CITD/UIT và đáp ứng 
 
 > **Ghép dữ liệu để phân tích OLS:** Không ghép thời tiết Hàng Xanh với METR-LA/PEMS-BAY tại California. Hồi quy mưa–tốc độ chỉ hợp lệ khi dữ liệu cùng khu vực và kỳ quan sát; nếu chưa có tốc độ Hàng Xanh thì dashboard chỉ trình bày thời tiết như bối cảnh GIS.
 
-Nguồn và cách tái tạo dữ liệu được ghi tại [01_data_ingestion/data_sources.md](01_data_ingestion/data_sources.md). CSV nguồn được giữ trong `data/raw/`; Parquet long-format phục vụ xử lý nằm trong `data/interim/` và được tạo bằng [convert_traffic_to_parquet.py](01_data_ingestion/convert_traffic_to_parquet.py).
+Nguồn và cách tái tạo dữ liệu được ghi tại [01_data_ingestion/data_sources.md](01_data_ingestion/data_sources.md). CSV nguồn được giữ trong `data/raw/`; Parquet long-format phục vụ Spark nằm trong `data/interim/` với `timestamp[us]`, được tạo bằng [convert_traffic_to_parquet.py](01_data_ingestion/convert_traffic_to_parquet.py).
 
 ---
 

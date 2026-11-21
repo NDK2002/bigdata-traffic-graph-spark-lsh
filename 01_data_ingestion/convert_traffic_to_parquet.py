@@ -11,7 +11,7 @@ import pyarrow.parquet as pq
 
 
 SCHEMA = pa.schema([
-    ("timestamp", pa.timestamp("ns")),
+    ("timestamp", pa.timestamp("us")),
     ("sensor_id", pa.string()),
     ("speed", pa.float64()),
 ])
@@ -32,7 +32,7 @@ def convert(source: Path, destination: Path, chunk_rows: int = 1000) -> dict:
             # intermediate pandas melt and preserve the source float64 values.
             matrix = wide.to_numpy(dtype="float64", copy=False)
             table = pa.Table.from_arrays([
-                pa.array(np.repeat(wide.index.to_numpy(), nsensors), type=pa.timestamp("ns")),
+                pa.array(np.repeat(wide.index.to_numpy(), nsensors), type=pa.timestamp("us")),
                 pa.array(np.tile(wide.columns.to_numpy(dtype=str), nrows), type=pa.string()),
                 pa.array(matrix.reshape(-1), type=pa.float64(), from_pandas=True),
             ], schema=SCHEMA)
@@ -43,7 +43,12 @@ def convert(source: Path, destination: Path, chunk_rows: int = 1000) -> dict:
                     b"description": b"Long-format traffic speeds; one row per timestamp and sensor",
                     b"speed_unit": b"mph",
                 })
-                writer = pq.ParquetWriter(temp, table.schema.with_metadata(metadata), compression="snappy")
+                writer = pq.ParquetWriter(
+                    temp,
+                    table.schema.with_metadata(metadata),
+                    compression="snappy",
+                    coerce_timestamps="us",
+                )
             writer.write_table(table, row_group_size=table.num_rows)
             total_rows += nrows
             total_sensors = nsensors
