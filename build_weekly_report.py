@@ -43,26 +43,38 @@ r2.font.name = "Times New Roman"
 r2.font.size = Pt(13)
 r2.bold = True
 
-# 4. Table 0: Student List
+# 4. Table 0: Student List without Phone and Email
 table = doc.tables[0]
 table.alignment = WD_TABLE_ALIGNMENT.CENTER
 
+# Remove columns 4 (EMAIL) and 3 (ĐIỆN THOẠI) from the original template table
+for row in table.rows:
+    row._tr.remove(row.cells[4]._tc)
+    row._tr.remove(row.cells[3]._tc)
+
+tblGrid = table._tbl.tblGrid
+if tblGrid is not None:
+    cols = tblGrid.findall(qn("w:gridCol"))
+    if len(cols) >= 5:
+        tblGrid.remove(cols[4])
+        tblGrid.remove(cols[3])
+
 students = [
-    ("1", "Trần Hoàng Hôn (Trưởng nhóm - STT 52)", "26410046", "0987 654 321", "mrkiss.it@gmail.com"),
-    ("2", "Nguyễn Duy Khang (STT 55)", "26410055", "0912 345 678", "ndk1200@gmail.com"),
-    ("3", "Phạm Thành Trung (STT 70)", "26410141", "0923 456 789", "ttrung.cs@gmail.com"),
-    ("4", "Vũ Văn Duy (STT 47)", "26410031", "0934 567 890", "duyvu.citd@gmail.com"),
+    ("1", "Trần Hoàng Hôn (Trưởng nhóm - STT 52)", "26410046"),
+    ("2", "Nguyễn Duy Khang (STT 55)", "26410055"),
+    ("3", "Phạm Thành Trung (STT 70)", "26410141"),
+    ("4", "Vũ Văn Duy (STT 47)", "26410031"),
 ]
 
 # Ensure table has 5 rows (Header + 4 students)
 while len(table.rows) < 5:
     table.add_row()
 
-col_widths = [Inches(0.5), Inches(2.5), Inches(1.0), Inches(1.3), Inches(2.1)]
+col_widths = [Inches(0.8), Inches(4.2), Inches(1.5)]
 
-# Header row styling
+# Header row styling (STT, HỌ VÀ TÊN, MSSV)
 header_cells = table.rows[0].cells
-for idx, text in enumerate(["STT", "HỌ VÀ TÊN", "MSSV", "ĐIỆN THOẠI", "EMAIL"]):
+for idx, text in enumerate(["STT", "HỌ VÀ TÊN", "MSSV"]):
     header_cells[idx].text = ""
     p = header_cells[idx].paragraphs[0]
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -78,7 +90,7 @@ for r_idx, s in enumerate(students, 1):
         cell = row.cells[c_idx]
         cell.text = ""
         p = cell.paragraphs[0]
-        p.alignment = WD_ALIGN_PARAGRAPH.CENTER if c_idx in (0, 2, 3) else WD_ALIGN_PARAGRAPH.LEFT
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER if c_idx in (0, 2) else WD_ALIGN_PARAGRAPH.LEFT
         r = p.add_run(val)
         r.font.name = "Times New Roman"
         r.font.size = Pt(12)
@@ -90,7 +102,6 @@ for row in table.rows:
         row.cells[idx].width = width
 
 # Delete old paragraphs below table (from index 3 onwards)
-# Note: In python-docx, deleting paragraphs requires removing them from the XML tree
 p_elements = [p._p for p in doc.paragraphs[3:]]
 for pe in p_elements:
     pe.getparent().remove(pe)
@@ -247,4 +258,4 @@ add_bullet_point(
 # Save to both target file and template in Do An
 doc.save(out_path)
 doc.save(mau_path)
-print("SUCCESS: Generated both files successfully!")
+print("SUCCESS: Regenerated both files without email and phone number!")
