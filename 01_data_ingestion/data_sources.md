@@ -5,7 +5,9 @@
 - Bản dữ liệu dùng trong repo: các CSV công khai trong [Zenodo record 5146275](https://zenodo.org/records/5146275), phát hành với giấy phép CC BY 4.0. Script tải: `download_traffic_datasets.py`.
 - METR-LA có 34.272 mốc thời gian × 207 cảm biến; PEMS-BAY có 52.116 × 325. CSV gốc là ma trận rộng, mỗi hàng là một thời điểm 5 phút và mỗi cột là một cảm biến.
 - Tọa độ 207 cảm biến METR-LA và adjacency METR-LA lấy từ repo [DCRNN của Li et al.](https://github.com/liyaguang/DCRNN/tree/602afd9d767d3aa1c9b3eac51710d6aeee12c227), ghim ở commit `602afd9d767d3aa1c9b3eac51710d6aeee12c227`. PEMS-BAY metadata và adjacency lấy cùng Zenodo record.
-- CSV được giữ nguyên tại `data/raw/`. Bản Parquet chuẩn hóa nằm tại `data/interim/`, dạng dài với `timestamp` độ phân giải microsecond (`timestamp[us]`), `sensor_id`, `speed` và nén Snappy để tương thích Spark. Không commit file dữ liệu vào Git.
+- CSV được giữ nguyên tại `data/raw/`. Không commit file dữ liệu vào Git. Nhóm cung cấp 2 phương án tạo bản Parquet dạng dài chuẩn hóa tại `data/interim/`:
+  1. **Bản chuyển đổi nhanh cục bộ (`[T1]`):** Sử dụng `01_data_ingestion/convert_traffic_to_parquet.py` (Pandas + PyArrow), xuất file phẳng không phân vùng gồm 3 cột `(timestamp[us], sensor_id, speed)`.
+  2. **Bản Data Contract chính thức cho PySpark (`[K2]`):** Tuân thủ chặt chẽ [Data Contract](../02_pyspark_gigo/parquet_schema_contract.md), được tạo và kiểm toán tự động bởi `02_pyspark_gigo/csv_to_partitioned_parquet.py`. Schema gồm 6 cột: `timestamp` (`TIMESTAMP_NTZ` / microsecond không múi giờ), `sensor_id`, `speed`, `hour`, `day_of_week`, và được phân vùng theo `year_month` (`data/interim/<dataset>_sample.parquet/year_month=YYYY-MM/`) nhằm phục vụ trực tiếp pipeline PySpark GIGO và lát cắt benchmark `1M -> 17M` dòng.
 - Tài liệu gốc DCRNN dùng định dạng HDF5 cho chuỗi vận tốc. Bản đã tải ở đây là bản CSV tương thích về ma trận thời gian × cảm biến; vì pipeline nhóm dùng Parquet nên không tạo thêm bước HDF5 trung gian.
 
 ## Thời tiết Hàng Xanh

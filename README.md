@@ -49,7 +49,9 @@ Toàn bộ biểu mẫu tuân thủ chuẩn văn bản CITD/UIT và đáp ứng 
 
 > **Ghép dữ liệu để phân tích OLS:** Không ghép thời tiết Hàng Xanh với METR-LA/PEMS-BAY tại California. Hồi quy mưa–tốc độ chỉ hợp lệ khi dữ liệu cùng khu vực và kỳ quan sát; nếu chưa có tốc độ Hàng Xanh thì dashboard chỉ trình bày thời tiết như bối cảnh GIS.
 
-Nguồn và cách tái tạo dữ liệu được ghi tại [01_data_ingestion/data_sources.md](01_data_ingestion/data_sources.md). CSV nguồn được giữ trong `data/raw/`; Parquet long-format phục vụ Spark nằm trong `data/interim/` với `timestamp[us]`, được tạo bằng [convert_traffic_to_parquet.py](01_data_ingestion/convert_traffic_to_parquet.py).
+Nguồn và quy chuẩn tái tạo dữ liệu được ghi nhận chi tiết tại [01_data_ingestion/data_sources.md](01_data_ingestion/data_sources.md). CSV nguồn thô được lưu trữ tại `data/raw/`. Nhóm chuẩn bị 2 hình thức chuyển đổi Parquet phục vụ các mục đích khác nhau:
+- **Kiểm thử & Tiền xử lý cục bộ (`[T1]`):** Tạo bằng script [convert_traffic_to_parquet.py](01_data_ingestion/convert_traffic_to_parquet.py) (Pandas/PyArrow, nén Snappy, không partition, 3 cột: `timestamp[us]`, `sensor_id`, `speed`).
+- **Chuẩn hóa phân tán PySpark & Phân vùng tháng (`[K2]`):** Tuân thủ chặt chẽ [Data Contract](02_pyspark_gigo/parquet_schema_contract.md), tạo bằng script PySpark [csv_to_partitioned_parquet.py](02_pyspark_gigo/csv_to_partitioned_parquet.py) (6 cột: `timestamp` NTZ microsecond, `sensor_id`, `speed`, `hour`, `day_of_week`, `year_month`, tự động partition theo `year_month` tại `data/interim/<dataset>_sample.parquet/`).
 
 ---
 
