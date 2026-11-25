@@ -28,6 +28,7 @@ Toàn bộ biểu mẫu tuân thủ chuẩn văn bản CITD/UIT và đáp ứng 
 | 1 | [De_Cuong_Chi_Tiet_Do_An_Phan_Tich_Du_Lieu_Lon.md](De_Cuong_Chi_Tiet_Do_An_Phan_Tich_Du_Lieu_Lon.md) | Thuyết minh Đề cương chi tiết 7 mục + lộ trình `Tuần 4 – Tuần 9` (Markdown). |
 | 2 | [De_Cuong_Chi_Tiet_Do_An_Phan_Tich_Du_Lieu_Lon.docx](De_Cuong_Chi_Tiet_Do_An_Phan_Tich_Du_Lieu_Lon.docx) | Bản Đề cương Word định dạng bảng chuẩn **CITD/UIT** (`Table 0` Quốc hiệu + `Table 1` 8x2) sẵn sàng ký duyệt. |
 | 3 | [Ke_Hoach_Thuc_Hien_Do_An_Phan_Tich_Du_Lieu_Lon.xlsx](Ke_Hoach_Thuc_Hien_Do_An_Phan_Tich_Du_Lieu_Lon.xlsx) | Bảng theo dõi tiến độ `Tuần 4 – Tuần 9` (`11/11 – 20/12/2026`, cột `SV tự đánh giá` / `GV đánh giá`). |
+| - | [Ke_Hoach_Thuc_Hien_Tuan_4.md](Ke_Hoach_Thuc_Hien_Tuan_4.md) \| [Tuan_5.md](Ke_Hoach_Thuc_Hien_Tuan_5.md) \| [Tuan_6.md](Ke_Hoach_Thuc_Hien_Tuan_6.md) | Kế hoạch chi tiết từng tuần: phân công 4 thành viên, ma trận phụ thuộc, sơ đồ Mermaid và checklist DoD. |
 | 4 | [Bao_Cao_Tuan_4_Phan_Tich_Du_Lieu_Lon.docx](Bao_Cao_Tuan_4_Phan_Tich_Du_Lieu_Lon.docx) | Báo cáo tiến độ Tuần 4 chính thức (chuẩn biểu mẫu CITD/UIT, bảng 3 cột). |
 | 5 | [Bao_Cao_Tuan_5_Phan_Tich_Du_Lieu_Lon.docx](Bao_Cao_Tuan_5_Phan_Tich_Du_Lieu_Lon.docx) | Báo cáo tiến độ Tuần 5 chính thức (chuẩn biểu mẫu CITD/UIT, cập nhật nghiệm thu PR #6). |
 | 6 | [Mau_Bao_Cao_Tuan_Phan_Tich_Du_Lieu_Lon.docx](Mau_Bao_Cao_Tuan_Phan_Tich_Du_Lieu_Lon.docx) | Mẫu báo cáo tiến độ tuần chuẩn CITD điền sẵn danh sách 4 thành viên Nhóm 11. |
