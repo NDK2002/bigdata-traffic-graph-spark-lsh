@@ -364,21 +364,30 @@ def relabel_by_center_distance(
 
 def build_from_preprocessed_graph(G: nx.MultiDiGraph) -> tuple[nx.MultiDiGraph, pd.DataFrame, pd.DataFrame]:
     """Tái tạo bảng nodes và edges từ đồ thị GraphML đã chuẩn hóa 20 nút."""
+    from pyproj import Transformer
+    transformer = Transformer.from_crs("EPSG:4326", "EPSG:32648", always_xy=True)
+
     nodes = []
     for n, d in sorted(G.nodes(data=True), key=lambda x: int(x[0])):
         nid = int(n)
+        lat = round(float(d.get("lat", d.get("y"))), 6)
+        lon = round(float(d.get("lon", d.get("x"))), 6)
+        ux = float(d.get("utm_x", 0.0))
+        uy = float(d.get("utm_y", 0.0))
+        if ux == 0.0 or uy == 0.0:
+            ux, uy = transformer.transform(lon, lat)
         nodes.append({
             "node_id": nid,
             "node_code": d.get("node_code", f"HX_{nid:02d}"),
-            "lat": round(float(d.get("lat", d.get("y"))), 6),
-            "lon": round(float(d.get("lon", d.get("x"))), 6),
+            "lat": lat,
+            "lon": lon,
             "roads": d.get("roads", ""),
             "highway_classes": d.get("highway_classes", "primary"),
             "in_degree": G.in_degree(n),
             "out_degree": G.out_degree(n),
             "dist_center_m": round(float(d.get("dist_center_m", 0.0)), 1),
-            "utm_x": round(float(d.get("utm_x", 0.0)), 2),
-            "utm_y": round(float(d.get("utm_y", 0.0)), 2),
+            "utm_x": round(ux, 2),
+            "utm_y": round(uy, 2),
         })
     nodes_df = pd.DataFrame(nodes)
 
@@ -388,6 +397,7 @@ def build_from_preprocessed_graph(G: nx.MultiDiGraph) -> tuple[nx.MultiDiGraph, 
         sorted(G.edges(data=True), key=lambda e: (int(e[0]), int(e[1]))), start=1
     ):
         nu, nv = int(u), int(v)
+        is_bidir = (nv, nu) in edge_set
         edges.append({
             "edge_id": f"E_{idx:02d}",
             "u": nu,
@@ -398,8 +408,8 @@ def build_from_preprocessed_graph(G: nx.MultiDiGraph) -> tuple[nx.MultiDiGraph, 
             "highway": d.get("highway", "primary"),
             "lanes": int(d.get("lanes", 1)),
             "length": round(float(d.get("length", 100.0)), 2),
-            "oneway": bool(d.get("oneway", True)),
-            "bidirectional_pair": (nv, nu) in edge_set,
+            "oneway": False if is_bidir else bool(d.get("oneway", True)),
+            "bidirectional_pair": is_bidir,
             "maxspeed": str(d.get("maxspeed", "60")),
         })
     edges_df = pd.DataFrame(edges)

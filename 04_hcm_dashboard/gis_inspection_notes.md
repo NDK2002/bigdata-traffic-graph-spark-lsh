@@ -10,7 +10,7 @@ Sinh tự động bởi `04_hcm_dashboard/build_gis_inspection_map.py`. Chạy l
 | node_id / node_code duy nhất | PASS | — |
 | dist_center_m khớp khoảng cách haversine tới tâm (sai lệch ≤ 25 m) | PASS | sai lệch lớn nhất 4.9 m |
 | Nút nằm trong bán kính trích xuất 1000 m | WARN | ngoài bán kính: HX_20 (1122 m) |
-| utm_x/utm_y có giá trị (UTM 48N) | FAIL | 20/20 nút có utm_x = utm_y = 0 |
+| utm_x/utm_y có giá trị (UTM 48N) | PASS | — |
 | Đầu mút cạnh tồn tại trong bảng nút | PASS | 37 cạnh |
 | Không có self-loop | PASS | 0 self-loop |
 | Không trùng cạnh (u, v) | PASS | 0 cạnh trùng |
@@ -19,7 +19,7 @@ Sinh tự động bởi `04_hcm_dashboard/build_gis_inspection_map.py`. Chạy l
 | Nút chỉ đi ra / chỉ đi vào (biên đồ thị) | PASS | chỉ ra: HX_14 · chỉ vào: HX_20 |
 | Cờ bidirectional_pair khớp sự tồn tại cạnh ngược | PASS | — |
 | Cạnh oneway=False có cạnh ngược | PASS | — |
-| Hai chiều của cùng cặp nút thống nhất cờ oneway | FAIL | HX_10↔HX_15 |
+| Hai chiều của cùng cặp nút thống nhất cờ oneway | PASS | — |
 | Độ dài cạnh ≥ 90% khoảng cách đường chim bay | PASS | tỷ lệ nhỏ nhất 0.932 |
 
 Cạnh vẽ nét đứt có mũi tên là cạnh chỉ có một chiều trong `hang_xanh_edges.csv`:

@@ -350,7 +350,7 @@ def write_summary_md(df, summary, run_id: str, path: Path, figures: list[Path]) 
         "",
         "Biểu đồ:",
         "",
-        *[f"- `{p.relative_to(path.parent)}`" for p in figures],
+        *[f"- `{p.relative_to(path.parent).as_posix()}`" for p in figures],
         "",
     ]
     path.write_text("\n".join(lines), encoding="utf-8")
