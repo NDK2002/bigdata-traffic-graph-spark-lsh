@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_9275db0bfae4e2e7bd822faf0a0c5127 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-textpath@1.2.3/leaflet.textpath.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css"/>
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_9275db0bfae4e2e7bd822faf0a0c5127" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_9275db0bfae4e2e7bd822faf0a0c5127 = L.map(
+                "map_9275db0bfae4e2e7bd822faf0a0c5127",
+                {
+                    center: [10.8012, 106.7114],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 16,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+            L.control.scale().addTo(map_9275db0bfae4e2e7bd822faf0a0c5127);
+
+            
+
+        
+    
+            var tile_layer_a2fc11f5371832263c4b61a96ceca00f = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_a2fc11f5371832263c4b61a96ceca00f.addTo(map_9275db0bfae4e2e7bd822faf0a0c5127);
+        
+    
+            var tile_layer_ecf396c78c95d88af31850fdbd985769 = L.tileLayer(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "Esri World Light Gray Canvas",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            var tile_layer_fd9d15b3d018e0cc97adf6d8e4799bbd = L.tileLayer(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                {
+  "minZoom": 0,
+  "maxZoom": 18,
+  "maxNativeZoom": 18,
+  "noWrap": false,
+  "attribution": "Esri World Imagery",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            var feature_group_8596190a98154a39e5b6a79e4ea19499 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_27004e9925d3305f22cfaa32bdc9e17c = L.circle(
+                [10.8012, 106.7114],
+                {"bubblingMouseEvents": true, "color": "#555", "dashArray": "6,6", "dashOffset": null, "fill": false, "fillColor": "#555", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1000.0, "stroke": true, "weight": 1}
+            ).addTo(feature_group_8596190a98154a39e5b6a79e4ea19499);
+        
+    
+            var marker_00678cf336959f342c0536ded6464273 = L.marker(
+                [10.8012, 106.7114],
+                {
+}
+            ).addTo(feature_group_8596190a98154a39e5b6a79e4ea19499);
+        
+    
+            var icon_e2f7bd5164668b0cbc95cc2b5079404c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "gray",
+  "iconColor": "white",
+  "icon": "screenshot",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+            marker_00678cf336959f342c0536ded6464273.bindTooltip(
+                `<div>
+                     Tâm trích xuất (10.8012, 106.7114)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_00678cf336959f342c0536ded6464273.setIcon(icon_e2f7bd5164668b0cbc95cc2b5079404c);
+            
+    
+            feature_group_8596190a98154a39e5b6a79e4ea19499.addTo(map_9275db0bfae4e2e7bd822faf0a0c5127);
+        
+    
+            var feature_group_2870a3412b586125a0fa33c02c4f570a = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_d594e4cc2107614fcbb34604aa2517ac = L.polyline(
+                [[10.801603, 106.711366], [10.802984, 106.709374]],
+                {"bubblingMouseEvents": true, "color": "#9467bd", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#9467bd", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_2870a3412b586125a0fa33c02c4f570a);
+        
+    
+            poly_line_d594e4cc2107614fcbb34604aa2517ac.bindTooltip(
+                `<div>
+                     <b>HX_01 ↔ HX_04</b><br>Bạch Đằng<br>E_03: 358 m · 3 làn · 60 km/h<br>E_12: 359 m · 3 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_27da8623010d671ee068c809f7b56bc2 = L.polyline(
+                [[10.802984, 106.709374], [10.803061, 106.708427]],
+                {"bubblingMouseEvents": true, "color": "#9467bd", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#9467bd", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_2870a3412b586125a0fa33c02c4f570a);
+        
+    
+            poly_line_27da8623010d671ee068c809f7b56bc2.bindTooltip(
+                `<div>
+                     <b>HX_04 ↔ HX_06</b><br>Bạch Đằng<br>E_14: 114 m · 3 làn · 60 km/h<br>E_17: 114 m · 3 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_17a68c1bd0e742eefa1c9f87ab949d24 = L.polyline(
+                [[10.803061, 106.708427], [10.803327, 106.704822]],
+                {"bubblingMouseEvents": true, "color": "#9467bd", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#9467bd", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_2870a3412b586125a0fa33c02c4f570a);
+        
+    
+            poly_line_17a68c1bd0e742eefa1c9f87ab949d24.bindTooltip(
+                `<div>
+                     <b>HX_06 ↔ HX_13</b><br>Bạch Đằng<br>E_18: 405 m · 3 làn · 60 km/h<br>E_30: 405 m · 3 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_2870a3412b586125a0fa33c02c4f570a.addTo(map_9275db0bfae4e2e7bd822faf0a0c5127);
+        
+    
+            var feature_group_bbbb689009e32f01039fc96c88227b11 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_d99690738224b9ef46f7049ef651359f = L.polyline(
+                [[10.801015, 106.715132], [10.804326, 106.715886]],
+                {"bubblingMouseEvents": true, "color": "#ff7f0e", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff7f0e", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_bbbb689009e32f01039fc96c88227b11);
+        
+    
+            poly_line_d99690738224b9ef46f7049ef651359f.bindTooltip(
+                `<div>
+                     <b>HX_07 ↔ HX_10</b><br>Nguyễn Gia Trí<br>E_20: 379 m · 2 làn · 60 km/h<br>E_25: 379 m · 2 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_f7be680617009144c7cab90b3ea3f307 = L.polyline(
+                [[10.804326, 106.715886], [10.807596, 106.716359]],
+                {"bubblingMouseEvents": true, "color": "#ff7f0e", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff7f0e", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_bbbb689009e32f01039fc96c88227b11);
+        
+    
+            poly_line_f7be680617009144c7cab90b3ea3f307.bindTooltip(
+                `<div>
+                     <b>HX_10 ↔ HX_15</b><br>Nguyễn Gia Trí<br>E_26: 370 m · 2 làn · 60 km/h<br>E_32: 371 m · 2 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_bbbb689009e32f01039fc96c88227b11.addTo(map_9275db0bfae4e2e7bd822faf0a0c5127);
+        
+    
+            var feature_group_2fff611a110068aed1585c09cf1d9e5a = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_c5ae574796a4531bdf6d5d109ad96fcd = L.polyline(
+                [[10.809741, 106.712401], [10.807596, 106.716359]],
+                {"bubblingMouseEvents": true, "color": "#8c564b", "dashArray": "10,6", "dashOffset": null, "fill": false, "fillColor": "#8c564b", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(feature_group_2fff611a110068aed1585c09cf1d9e5a);
+        
+    
+            poly_line_c5ae574796a4531bdf6d5d109ad96fcd.bindTooltip(
+                `<div>
+                     <b>HX_18 → HX_15</b> (một chiều)<br>Ung Văn Khiêm<br>E_36: 491 m · 2 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_c5ae574796a4531bdf6d5d109ad96fcd.setText(
+                "  \u25ba  ",
+                {
+  "repeat": true,
+  "center": false,
+  "below": false,
+  "offset": 6,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#8c564b",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            feature_group_2fff611a110068aed1585c09cf1d9e5a.addTo(map_9275db0bfae4e2e7bd822faf0a0c5127);
+        
+    
+            var feature_group_7c200fca202227ab6fc4359c90c69243 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_4d28b4d1ecae0d69a310ce31a50c9cc5 = L.polyline(
+                [[10.801603, 106.711366], [10.797919, 106.710895]],
+                {"bubblingMouseEvents": true, "color": "#d62728", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#d62728", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_7c200fca202227ab6fc4359c90c69243);
+        
+    
+            poly_line_4d28b4d1ecae0d69a310ce31a50c9cc5.bindTooltip(
+                `<div>
+                     <b>HX_01 ↔ HX_05</b><br>Xô Viết Nghệ Tĩnh<br>E_04: 432 m · 2 làn · 60 km/h<br>E_15: 433 m · 2 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_cf1ca6c339e2df7c75fb1c1ad090e3aa = L.polyline(
+                [[10.801603, 106.711366], [10.806824, 106.711564]],
+                {"bubblingMouseEvents": true, "color": "#d62728", "dashArray": "10,6", "dashOffset": null, "fill": false, "fillColor": "#d62728", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(feature_group_7c200fca202227ab6fc4359c90c69243);
+        
+    
+            poly_line_cf1ca6c339e2df7c75fb1c1ad090e3aa.bindTooltip(
+                `<div>
+                     <b>HX_01 → HX_11</b> (một chiều)<br>Cầu Sơn / Xô Viết Nghệ Tĩnh<br>E_05: 578 m · 3 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_cf1ca6c339e2df7c75fb1c1ad090e3aa.setText(
+                "  \u25ba  ",
+                {
+  "repeat": true,
+  "center": false,
+  "below": false,
+  "offset": 6,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#d62728",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_9b51260e529999576205db587187a360 = L.polyline(
+                [[10.797919, 106.710895], [10.795451, 106.709931]],
+                {"bubblingMouseEvents": true, "color": "#d62728", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#d62728", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_7c200fca202227ab6fc4359c90c69243);
+        
+    
+            poly_line_9b51260e529999576205db587187a360.bindTooltip(
+                `<div>
+                     <b>HX_05 ↔ HX_12</b><br>Xô Viết Nghệ Tĩnh<br>E_16: 304 m · 2 làn · 60 km/h<br>E_28: 309 m · 2 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_55e74b83d41ae3e67b144f5a7a7889a2 = L.polyline(
+                [[10.806824, 106.711564], [10.809741, 106.712401]],
+                {"bubblingMouseEvents": true, "color": "#d62728", "dashArray": "10,6", "dashOffset": null, "fill": false, "fillColor": "#d62728", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(feature_group_7c200fca202227ab6fc4359c90c69243);
+        
+    
+            poly_line_55e74b83d41ae3e67b144f5a7a7889a2.bindTooltip(
+                `<div>
+                     <b>HX_11 → HX_18</b> (một chiều)<br>Xô Viết Nghệ Tĩnh<br>E_27: 314 m · 3 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_55e74b83d41ae3e67b144f5a7a7889a2.setText(
+                "  \u25ba  ",
+                {
+  "repeat": true,
+  "center": false,
+  "below": false,
+  "offset": 6,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#d62728",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_73e6ddc7e166a5527625069550e74778 = L.polyline(
+                [[10.795451, 106.709931], [10.793405, 106.70802]],
+                {"bubblingMouseEvents": true, "color": "#d62728", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#d62728", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_7c200fca202227ab6fc4359c90c69243);
+        
+    
+            poly_line_73e6ddc7e166a5527625069550e74778.bindTooltip(
+                `<div>
+                     <b>HX_12 ↔ HX_17</b><br>Xô Viết Nghệ Tĩnh<br>E_29: 312 m · 2 làn · 60 km/h<br>E_34: 313 m · 2 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_fdbd2116c1cccbf4f5406c772c94e4c8 = L.polyline(
+                [[10.793405, 106.70802], [10.792216, 106.706729]],
+                {"bubblingMouseEvents": true, "color": "#d62728", "dashArray": "10,6", "dashOffset": null, "fill": false, "fillColor": "#d62728", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(feature_group_7c200fca202227ab6fc4359c90c69243);
+        
+    
+            poly_line_fdbd2116c1cccbf4f5406c772c94e4c8.bindTooltip(
+                `<div>
+                     <b>HX_17 → HX_20</b> (một chiều)<br>Xô Viết Nghệ Tĩnh<br>E_35: 201 m · 2 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_fdbd2116c1cccbf4f5406c772c94e4c8.setText(
+                "  \u25ba  ",
+                {
+  "repeat": true,
+  "center": false,
+  "below": false,
+  "offset": 6,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#d62728",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            feature_group_7c200fca202227ab6fc4359c90c69243.addTo(map_9275db0bfae4e2e7bd822faf0a0c5127);
+        
+    
+            var feature_group_788f68a5335dc2dc363263ebbae3c513 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_2bd523cec0bda95ff615015279579af0 = L.polyline(
+                [[10.802984, 106.709374], [10.801059, 106.709259]],
+                {"bubblingMouseEvents": true, "color": "#2ca02c", "dashArray": "10,6", "dashOffset": null, "fill": false, "fillColor": "#2ca02c", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(feature_group_788f68a5335dc2dc363263ebbae3c513);
+        
+    
+            poly_line_2bd523cec0bda95ff615015279579af0.bindTooltip(
+                `<div>
+                     <b>HX_04 → HX_03</b> (một chiều)<br>Đinh Bộ Lĩnh<br>E_13: 202 m · 4 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_2bd523cec0bda95ff615015279579af0.setText(
+                "  \u25ba  ",
+                {
+  "repeat": true,
+  "center": false,
+  "below": false,
+  "offset": 6,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#2ca02c",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_7a97f23098486a54ff02f43382d3c5e2 = L.polyline(
+                [[10.808347, 106.709284], [10.802984, 106.709374]],
+                {"bubblingMouseEvents": true, "color": "#2ca02c", "dashArray": "10,6", "dashOffset": null, "fill": false, "fillColor": "#2ca02c", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(feature_group_788f68a5335dc2dc363263ebbae3c513);
+        
+    
+            poly_line_7a97f23098486a54ff02f43382d3c5e2.bindTooltip(
+                `<div>
+                     <b>HX_14 → HX_04</b> (một chiều)<br>Đinh Bộ Lĩnh / Cầu Đinh Bộ Lĩnh<br>E_31: 595 m · 4 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_7a97f23098486a54ff02f43382d3c5e2.setText(
+                "  \u25ba  ",
+                {
+  "repeat": true,
+  "center": false,
+  "below": false,
+  "offset": 6,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#2ca02c",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            feature_group_788f68a5335dc2dc363263ebbae3c513.addTo(map_9275db0bfae4e2e7bd822faf0a0c5127);
+        
+    
+            var feature_group_960a8d7c50659336ae33e7e320d8a637 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_78a7d1bb354b8b41ed59ca0d225858e3 = L.polyline(
+                [[10.801603, 106.711366], [10.80138, 106.7133]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#1f77b4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_960a8d7c50659336ae33e7e320d8a637);
+        
+    
+            poly_line_78a7d1bb354b8b41ed59ca0d225858e3.bindTooltip(
+                `<div>
+                     <b>HX_01 ↔ HX_02</b><br>Điện Biên Phủ<br>E_01: 205 m · 5 làn · 60 km/h<br>E_06: 230 m · 4 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_bfbbf4fbe29815dc4fc4286b91a7f18a = L.polyline(
+                [[10.801603, 106.711366], [10.801059, 106.709259]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#1f77b4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_960a8d7c50659336ae33e7e320d8a637);
+        
+    
+            poly_line_bfbbf4fbe29815dc4fc4286b91a7f18a.bindTooltip(
+                `<div>
+                     <b>HX_01 ↔ HX_03</b><br>Điện Biên Phủ<br>E_02: 239 m · 6 làn · 60 km/h<br>E_09: 242 m · 6 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_4397b8c686ab36cd24ca664c5332926e = L.polyline(
+                [[10.80138, 106.7133], [10.800665, 106.71568]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": "10,6", "dashOffset": null, "fill": false, "fillColor": "#1f77b4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(feature_group_960a8d7c50659336ae33e7e320d8a637);
+        
+    
+            poly_line_4397b8c686ab36cd24ca664c5332926e.bindTooltip(
+                `<div>
+                     <b>HX_02 → HX_08</b> (một chiều)<br>Điện Biên Phủ<br>E_08: 312 m · 4 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_4397b8c686ab36cd24ca664c5332926e.setText(
+                "  \u25ba  ",
+                {
+  "repeat": true,
+  "center": false,
+  "below": false,
+  "offset": 6,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#1f77b4",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_39c5e07d6392ad573f2f97610ad4f547 = L.polyline(
+                [[10.801059, 106.709259], [10.797312, 106.704242]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#1f77b4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_960a8d7c50659336ae33e7e320d8a637);
+        
+    
+            poly_line_39c5e07d6392ad573f2f97610ad4f547.bindTooltip(
+                `<div>
+                     <b>HX_03 ↔ HX_16</b><br>Điện Biên Phủ<br>E_11: 704 m · 3 làn · 60 km/h<br>E_33: 725 m · 3 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_51268106c133e618aad16de0b299dd41 = L.polyline(
+                [[10.801015, 106.715132], [10.80138, 106.7133]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": "10,6", "dashOffset": null, "fill": false, "fillColor": "#1f77b4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(feature_group_960a8d7c50659336ae33e7e320d8a637);
+        
+    
+            poly_line_51268106c133e618aad16de0b299dd41.bindTooltip(
+                `<div>
+                     <b>HX_07 → HX_02</b> (một chiều)<br>Điện Biên Phủ<br>E_19: 215 m · 4 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_51268106c133e618aad16de0b299dd41.setText(
+                "  \u25ba  ",
+                {
+  "repeat": true,
+  "center": false,
+  "below": false,
+  "offset": 6,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#1f77b4",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_75395d2774231812dd3b480e4b40d475 = L.polyline(
+                [[10.800665, 106.71568], [10.801015, 106.715132]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": "10,6", "dashOffset": null, "fill": false, "fillColor": "#1f77b4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 5}
+            ).addTo(feature_group_960a8d7c50659336ae33e7e320d8a637);
+        
+    
+            poly_line_75395d2774231812dd3b480e4b40d475.bindTooltip(
+                `<div>
+                     <b>HX_08 → HX_07</b> (một chiều)<br>Điện Biên Phủ<br>E_21: 82 m · 4 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            poly_line_75395d2774231812dd3b480e4b40d475.setText(
+                "  \u25ba  ",
+                {
+  "repeat": true,
+  "center": false,
+  "below": false,
+  "offset": 6,
+  "orientation": 0,
+  "attributes": {
+  "fill": "#1f77b4",
+  "font-size": "14",
+},
+}
+            );
+        
+    
+            var poly_line_e085c6937bbd4de2d7e40d490508f13d = L.polyline(
+                [[10.800665, 106.71568], [10.800225, 106.716685]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#1f77b4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_960a8d7c50659336ae33e7e320d8a637);
+        
+    
+            poly_line_e085c6937bbd4de2d7e40d490508f13d.bindTooltip(
+                `<div>
+                     <b>HX_08 ↔ HX_09</b><br>Điện Biên Phủ / Cầu Văn Thánh 1<br>E_22: 119 m · 4 làn · 60 km/h<br>E_23: 121 m · 4 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_8fabe89b66fe996e3abb9eda6d0cce1f = L.polyline(
+                [[10.800225, 106.716685], [10.798529, 106.71977]],
+                {"bubblingMouseEvents": true, "color": "#1f77b4", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#1f77b4", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_960a8d7c50659336ae33e7e320d8a637);
+        
+    
+            poly_line_8fabe89b66fe996e3abb9eda6d0cce1f.bindTooltip(
+                `<div>
+                     <b>HX_09 ↔ HX_19</b><br>Điện Biên Phủ<br>E_24: 406 m · 4 làn · 60 km/h<br>E_37: 376 m · 4 làn · 60 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_960a8d7c50659336ae33e7e320d8a637.addTo(map_9275db0bfae4e2e7bd822faf0a0c5127);
+        
+    
+            var feature_group_fb03fd0f26a283a6e48e5f2781c2e9a0 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_eaefc28c90e57ba128d8b80a69a06755 = L.polyline(
+                [[10.80138, 106.7133], [10.801059, 106.709259]],
+                {"bubblingMouseEvents": true, "color": "#e377c2", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#e377c2", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.85, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_fb03fd0f26a283a6e48e5f2781c2e9a0);
+        
+    
+            poly_line_eaefc28c90e57ba128d8b80a69a06755.bindTooltip(
+                `<div>
+                     <b>HX_02 ↔ HX_03</b><br>Cầu vượt Hàng Xanh<br>E_07: 507 m · 2 làn · 50 km/h<br>E_10: 487 m · 2 làn · 50 km/h
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_fb03fd0f26a283a6e48e5f2781c2e9a0.addTo(map_9275db0bfae4e2e7bd822faf0a0c5127);
+        
+    
+            var feature_group_745d9c37778dbbff3b27a6b2e48e2f6b = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_b5ba361443253aba4ab4b79085c711ba = L.circleMarker(
+                [10.801603, 106.711366],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_3b7776cd34378b563f92d8548d260ede = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_bba8e9c5486e000226f299b8e61e2ce2 = $(`<div id="html_bba8e9c5486e000226f299b8e61e2ce2" style="width: 100.0%; height: 100.0%;"><b>HX_01</b> (node_id 1)<br>Điện Biên Phủ | Bạch Đằng | Xô Viết Nghệ Tĩnh | Cầu Sơn / Xô Viết Nghệ Tĩnh<br>lat 10.801603, lon 106.711366<br>in/out: 4/5 · cách tâm 45 m</div>`)[0];
+                popup_3b7776cd34378b563f92d8548d260ede.setContent(html_bba8e9c5486e000226f299b8e61e2ce2);
+            
+        
+
+        circle_marker_b5ba361443253aba4ab4b79085c711ba.bindPopup(popup_3b7776cd34378b563f92d8548d260ede)
+        ;
+
+        
+    
+    
+            circle_marker_b5ba361443253aba4ab4b79085c711ba.bindTooltip(
+                `<div>
+                     HX_01
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_28a102606320e083507ae024b9f7b085 = L.marker(
+                [10.801603, 106.711366],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_ae77ef646de19b654a585460c7d42c10 = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_01\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_28a102606320e083507ae024b9f7b085.setIcon(div_icon_ae77ef646de19b654a585460c7d42c10);
+            
+    
+            var circle_marker_039638d085f7557ed22ab05d43437a51 = L.circleMarker(
+                [10.80138, 106.7133],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_3475286ace4d3ae4d7824167279e5a9c = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_e4de8cccf347a9e53628bfc9ec4d043f = $(`<div id="html_e4de8cccf347a9e53628bfc9ec4d043f" style="width: 100.0%; height: 100.0%;"><b>HX_02</b> (node_id 2)<br>Cầu vượt Hàng Xanh | Điện Biên Phủ<br>lat 10.801380, lon 106.713300<br>in/out: 3/3 · cách tâm 209 m</div>`)[0];
+                popup_3475286ace4d3ae4d7824167279e5a9c.setContent(html_e4de8cccf347a9e53628bfc9ec4d043f);
+            
+        
+
+        circle_marker_039638d085f7557ed22ab05d43437a51.bindPopup(popup_3475286ace4d3ae4d7824167279e5a9c)
+        ;
+
+        
+    
+    
+            circle_marker_039638d085f7557ed22ab05d43437a51.bindTooltip(
+                `<div>
+                     HX_02
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_8b6c27bb3de00e778e73830dc7f5cd61 = L.marker(
+                [10.80138, 106.7133],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_2fd7f0180b126308eb92a978aad07e61 = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_02\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_8b6c27bb3de00e778e73830dc7f5cd61.setIcon(div_icon_2fd7f0180b126308eb92a978aad07e61);
+            
+    
+            var circle_marker_5b2d3d3c6246ba3787ce1b76581b7d0a = L.circleMarker(
+                [10.801059, 106.709259],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_42d076405bb4ffcce5775817ddb4ebc5 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_901fbe1f549250146b9e182c5a87ff86 = $(`<div id="html_901fbe1f549250146b9e182c5a87ff86" style="width: 100.0%; height: 100.0%;"><b>HX_03</b> (node_id 3)<br>Đinh Bộ Lĩnh | Điện Biên Phủ | Cầu vượt Hàng Xanh<br>lat 10.801059, lon 106.709259<br>in/out: 4/3 · cách tâm 235 m</div>`)[0];
+                popup_42d076405bb4ffcce5775817ddb4ebc5.setContent(html_901fbe1f549250146b9e182c5a87ff86);
+            
+        
+
+        circle_marker_5b2d3d3c6246ba3787ce1b76581b7d0a.bindPopup(popup_42d076405bb4ffcce5775817ddb4ebc5)
+        ;
+
+        
+    
+    
+            circle_marker_5b2d3d3c6246ba3787ce1b76581b7d0a.bindTooltip(
+                `<div>
+                     HX_03
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_e25653f12112d636d26277f73b41ccf8 = L.marker(
+                [10.801059, 106.709259],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_c9a2df3c60a6003be07d20bf047cd1fa = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_03\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_e25653f12112d636d26277f73b41ccf8.setIcon(div_icon_c9a2df3c60a6003be07d20bf047cd1fa);
+            
+    
+            var circle_marker_cd2bb5654853d0b73172c6597750392c = L.circleMarker(
+                [10.802984, 106.709374],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_1e43d6794f397d17405c044c0b065e85 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_fb31288fafd17296c3cefaa7b571e93c = $(`<div id="html_fb31288fafd17296c3cefaa7b571e93c" style="width: 100.0%; height: 100.0%;"><b>HX_04</b> (node_id 4)<br>Đinh Bộ Lĩnh / Cầu Đinh Bộ Lĩnh | Bạch Đằng | Đinh Bộ Lĩnh<br>lat 10.802984, lon 106.709374<br>in/out: 3/3 · cách tâm 297 m</div>`)[0];
+                popup_1e43d6794f397d17405c044c0b065e85.setContent(html_fb31288fafd17296c3cefaa7b571e93c);
+            
+        
+
+        circle_marker_cd2bb5654853d0b73172c6597750392c.bindPopup(popup_1e43d6794f397d17405c044c0b065e85)
+        ;
+
+        
+    
+    
+            circle_marker_cd2bb5654853d0b73172c6597750392c.bindTooltip(
+                `<div>
+                     HX_04
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_6dd54354d101dee01d509f7286e99ca2 = L.marker(
+                [10.802984, 106.709374],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_c90f260d6e53fd315b1e834d3d3e4e28 = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_04\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_6dd54354d101dee01d509f7286e99ca2.setIcon(div_icon_c90f260d6e53fd315b1e834d3d3e4e28);
+            
+    
+            var circle_marker_c7a9977b1dfd4857dbeef40ec7b4c206 = L.circleMarker(
+                [10.797919, 106.710895],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_ee644531403a04266095bbcfb177b1cb = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_9f5bc8a21f382ff4ffe585fecb5a349c = $(`<div id="html_9f5bc8a21f382ff4ffe585fecb5a349c" style="width: 100.0%; height: 100.0%;"><b>HX_05</b> (node_id 5)<br>Xô Viết Nghệ Tĩnh<br>lat 10.797919, lon 106.710895<br>in/out: 2/2 · cách tâm 367 m</div>`)[0];
+                popup_ee644531403a04266095bbcfb177b1cb.setContent(html_9f5bc8a21f382ff4ffe585fecb5a349c);
+            
+        
+
+        circle_marker_c7a9977b1dfd4857dbeef40ec7b4c206.bindPopup(popup_ee644531403a04266095bbcfb177b1cb)
+        ;
+
+        
+    
+    
+            circle_marker_c7a9977b1dfd4857dbeef40ec7b4c206.bindTooltip(
+                `<div>
+                     HX_05
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_75c45478feb4db4f04cc3f3e6a77845c = L.marker(
+                [10.797919, 106.710895],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_9c8205427bc3e07f0dfbceb6c5af34cf = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_05\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_75c45478feb4db4f04cc3f3e6a77845c.setIcon(div_icon_9c8205427bc3e07f0dfbceb6c5af34cf);
+            
+    
+            var circle_marker_7f974c2cb06d3d8dbd8901835f15d7dd = L.circleMarker(
+                [10.803061, 106.708427],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_1aaf0d617514aaf4e7ba3e4e2b1f050f = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_9753ee02f62b96b7fa9f367382a1f0da = $(`<div id="html_9753ee02f62b96b7fa9f367382a1f0da" style="width: 100.0%; height: 100.0%;"><b>HX_06</b> (node_id 6)<br>Bạch Đằng<br>lat 10.803061, lon 106.708427<br>in/out: 2/2 · cách tâm 385 m</div>`)[0];
+                popup_1aaf0d617514aaf4e7ba3e4e2b1f050f.setContent(html_9753ee02f62b96b7fa9f367382a1f0da);
+            
+        
+
+        circle_marker_7f974c2cb06d3d8dbd8901835f15d7dd.bindPopup(popup_1aaf0d617514aaf4e7ba3e4e2b1f050f)
+        ;
+
+        
+    
+    
+            circle_marker_7f974c2cb06d3d8dbd8901835f15d7dd.bindTooltip(
+                `<div>
+                     HX_06
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_4ae17beb06ae9a80410ed1ca6a2429eb = L.marker(
+                [10.803061, 106.708427],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_e1e8e90c9ad9d5e41dbff2bfe569a71f = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_06\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_4ae17beb06ae9a80410ed1ca6a2429eb.setIcon(div_icon_e1e8e90c9ad9d5e41dbff2bfe569a71f);
+            
+    
+            var circle_marker_c10cbaac24d80cccef70239f923225a7 = L.circleMarker(
+                [10.801015, 106.715132],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_a6421ce15cb8f97803a064988f9cdc47 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_88f841507e84c9f8073548e1843bde1b = $(`<div id="html_88f841507e84c9f8073548e1843bde1b" style="width: 100.0%; height: 100.0%;"><b>HX_07</b> (node_id 7)<br>Nguyễn Gia Trí | Điện Biên Phủ<br>lat 10.801015, lon 106.715132<br>in/out: 2/2 · cách tâm 409 m</div>`)[0];
+                popup_a6421ce15cb8f97803a064988f9cdc47.setContent(html_88f841507e84c9f8073548e1843bde1b);
+            
+        
+
+        circle_marker_c10cbaac24d80cccef70239f923225a7.bindPopup(popup_a6421ce15cb8f97803a064988f9cdc47)
+        ;
+
+        
+    
+    
+            circle_marker_c10cbaac24d80cccef70239f923225a7.bindTooltip(
+                `<div>
+                     HX_07
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_e29e89b8c216c4af9323b7f4b811e5bb = L.marker(
+                [10.801015, 106.715132],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_1b3037217259d7821725f06d3fa2b944 = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_07\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_e29e89b8c216c4af9323b7f4b811e5bb.setIcon(div_icon_1b3037217259d7821725f06d3fa2b944);
+            
+    
+            var circle_marker_e1166ecfda32984d37869eef5fec442e = L.circleMarker(
+                [10.800665, 106.71568],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_4aa7ed7133832890a57ada96a898ef50 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_9b5432c955bf3b470c761a2a2ac899e4 = $(`<div id="html_9b5432c955bf3b470c761a2a2ac899e4" style="width: 100.0%; height: 100.0%;"><b>HX_08</b> (node_id 8)<br>Điện Biên Phủ | Điện Biên Phủ / Cầu Văn Thánh 1<br>lat 10.800665, lon 106.715680<br>in/out: 2/2 · cách tâm 472 m</div>`)[0];
+                popup_4aa7ed7133832890a57ada96a898ef50.setContent(html_9b5432c955bf3b470c761a2a2ac899e4);
+            
+        
+
+        circle_marker_e1166ecfda32984d37869eef5fec442e.bindPopup(popup_4aa7ed7133832890a57ada96a898ef50)
+        ;
+
+        
+    
+    
+            circle_marker_e1166ecfda32984d37869eef5fec442e.bindTooltip(
+                `<div>
+                     HX_08
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_20aeed52bc156fc743f36f4a853547d9 = L.marker(
+                [10.800665, 106.71568],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_01cb1134eeb3db4687e2e1ef06802b75 = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_08\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_20aeed52bc156fc743f36f4a853547d9.setIcon(div_icon_01cb1134eeb3db4687e2e1ef06802b75);
+            
+    
+            var circle_marker_f51ca978d93259a79259583019bfe0ea = L.circleMarker(
+                [10.800225, 106.716685],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_e77ba04a6820b52e71382322ae39a84a = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_5947860857d5be03603aa3fc97264653 = $(`<div id="html_5947860857d5be03603aa3fc97264653" style="width: 100.0%; height: 100.0%;"><b>HX_09</b> (node_id 9)<br>Điện Biên Phủ | Điện Biên Phủ / Cầu Văn Thánh 1<br>lat 10.800225, lon 106.716685<br>in/out: 2/2 · cách tâm 588 m</div>`)[0];
+                popup_e77ba04a6820b52e71382322ae39a84a.setContent(html_5947860857d5be03603aa3fc97264653);
+            
+        
+
+        circle_marker_f51ca978d93259a79259583019bfe0ea.bindPopup(popup_e77ba04a6820b52e71382322ae39a84a)
+        ;
+
+        
+    
+    
+            circle_marker_f51ca978d93259a79259583019bfe0ea.bindTooltip(
+                `<div>
+                     HX_09
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_757ec9df3b5105959a26157ef12ba271 = L.marker(
+                [10.800225, 106.716685],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_dc2b4ea080edbc9ef0a7af22c5f54190 = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_09\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_757ec9df3b5105959a26157ef12ba271.setIcon(div_icon_dc2b4ea080edbc9ef0a7af22c5f54190);
+            
+    
+            var circle_marker_02153c07bfe9ea72562efb3d452bad6f = L.circleMarker(
+                [10.804326, 106.715886],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_d149f05b790212e924077923cb8f0199 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_900246c96081e46eb8ed69059f0c42fd = $(`<div id="html_900246c96081e46eb8ed69059f0c42fd" style="width: 100.0%; height: 100.0%;"><b>HX_10</b> (node_id 10)<br>Nguyễn Gia Trí<br>lat 10.804326, lon 106.715886<br>in/out: 2/2 · cách tâm 600 m</div>`)[0];
+                popup_d149f05b790212e924077923cb8f0199.setContent(html_900246c96081e46eb8ed69059f0c42fd);
+            
+        
+
+        circle_marker_02153c07bfe9ea72562efb3d452bad6f.bindPopup(popup_d149f05b790212e924077923cb8f0199)
+        ;
+
+        
+    
+    
+            circle_marker_02153c07bfe9ea72562efb3d452bad6f.bindTooltip(
+                `<div>
+                     HX_10
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_014b3ebb441fad3ebe6115c6121c1af1 = L.marker(
+                [10.804326, 106.715886],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_ab18133daf8ed104119801e1f3c69edf = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_10\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_014b3ebb441fad3ebe6115c6121c1af1.setIcon(div_icon_ab18133daf8ed104119801e1f3c69edf);
+            
+    
+            var circle_marker_7c61644b37ad8b1e2a0ea17ce1163c40 = L.circleMarker(
+                [10.806824, 106.711564],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_69c513a837ca09a7720bd273e0c4b2e4 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_87b257ec0f9ca0aba3ad41af32bf5f4a = $(`<div id="html_87b257ec0f9ca0aba3ad41af32bf5f4a" style="width: 100.0%; height: 100.0%;"><b>HX_11</b> (node_id 11)<br>Cầu Sơn / Xô Viết Nghệ Tĩnh | Xô Viết Nghệ Tĩnh<br>lat 10.806824, lon 106.711564<br>in/out: 1/1 · cách tâm 622 m</div>`)[0];
+                popup_69c513a837ca09a7720bd273e0c4b2e4.setContent(html_87b257ec0f9ca0aba3ad41af32bf5f4a);
+            
+        
+
+        circle_marker_7c61644b37ad8b1e2a0ea17ce1163c40.bindPopup(popup_69c513a837ca09a7720bd273e0c4b2e4)
+        ;
+
+        
+    
+    
+            circle_marker_7c61644b37ad8b1e2a0ea17ce1163c40.bindTooltip(
+                `<div>
+                     HX_11
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_0d691508d32ee406b94a87f098559a22 = L.marker(
+                [10.806824, 106.711564],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_26265d061bfb4aef55e04be352eec167 = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_11\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_0d691508d32ee406b94a87f098559a22.setIcon(div_icon_26265d061bfb4aef55e04be352eec167);
+            
+    
+            var circle_marker_5d3160dc885078434e800d5b03557c01 = L.circleMarker(
+                [10.795451, 106.709931],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_9a78bb8c9a9b97af8fb90c0d3d78b9f9 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_bec4cf008367997edaf1c96a56b1d9e3 = $(`<div id="html_bec4cf008367997edaf1c96a56b1d9e3" style="width: 100.0%; height: 100.0%;"><b>HX_12</b> (node_id 12)<br>Xô Viết Nghệ Tĩnh<br>lat 10.795451, lon 106.709931<br>in/out: 2/2 · cách tâm 656 m</div>`)[0];
+                popup_9a78bb8c9a9b97af8fb90c0d3d78b9f9.setContent(html_bec4cf008367997edaf1c96a56b1d9e3);
+            
+        
+
+        circle_marker_5d3160dc885078434e800d5b03557c01.bindPopup(popup_9a78bb8c9a9b97af8fb90c0d3d78b9f9)
+        ;
+
+        
+    
+    
+            circle_marker_5d3160dc885078434e800d5b03557c01.bindTooltip(
+                `<div>
+                     HX_12
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_9b316683e6d670ca690ad4535cdbbebc = L.marker(
+                [10.795451, 106.709931],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_b4d0e61de95cfefeb6f5dc1845998954 = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_12\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_9b316683e6d670ca690ad4535cdbbebc.setIcon(div_icon_b4d0e61de95cfefeb6f5dc1845998954);
+            
+    
+            var circle_marker_8a74b8dff67449be60d70a454a13c5d1 = L.circleMarker(
+                [10.803327, 106.704822],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_749b4011ae236d21a89bbd2e6595cc53 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_16f1ccc1739185ec2645302a0c5b2453 = $(`<div id="html_16f1ccc1739185ec2645302a0c5b2453" style="width: 100.0%; height: 100.0%;"><b>HX_13</b> (node_id 13)<br>Bạch Đằng<br>lat 10.803327, lon 106.704822<br>in/out: 1/1 · cách tâm 757 m</div>`)[0];
+                popup_749b4011ae236d21a89bbd2e6595cc53.setContent(html_16f1ccc1739185ec2645302a0c5b2453);
+            
+        
+
+        circle_marker_8a74b8dff67449be60d70a454a13c5d1.bindPopup(popup_749b4011ae236d21a89bbd2e6595cc53)
+        ;
+
+        
+    
+    
+            circle_marker_8a74b8dff67449be60d70a454a13c5d1.bindTooltip(
+                `<div>
+                     HX_13
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_9be9025fbaf20f0e17cc253f18bebfe1 = L.marker(
+                [10.803327, 106.704822],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_353d0c711518cd54e1506034697ba328 = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_13\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_9be9025fbaf20f0e17cc253f18bebfe1.setIcon(div_icon_353d0c711518cd54e1506034697ba328);
+            
+    
+            var circle_marker_c60b140a6fa316176ce677e3b6850e98 = L.circleMarker(
+                [10.808347, 106.709284],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_557ae1245c8c7c73e4ebf011eca90c65 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_4d9a94c2e89d343fe0de1cb57d807483 = $(`<div id="html_4d9a94c2e89d343fe0de1cb57d807483" style="width: 100.0%; height: 100.0%;"><b>HX_14</b> (node_id 14)<br>Đinh Bộ Lĩnh / Cầu Đinh Bộ Lĩnh<br>lat 10.808347, lon 106.709284<br>in/out: 0/1 · cách tâm 824 m</div>`)[0];
+                popup_557ae1245c8c7c73e4ebf011eca90c65.setContent(html_4d9a94c2e89d343fe0de1cb57d807483);
+            
+        
+
+        circle_marker_c60b140a6fa316176ce677e3b6850e98.bindPopup(popup_557ae1245c8c7c73e4ebf011eca90c65)
+        ;
+
+        
+    
+    
+            circle_marker_c60b140a6fa316176ce677e3b6850e98.bindTooltip(
+                `<div>
+                     HX_14
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_f81145c93026e005048462946f46cef9 = L.marker(
+                [10.808347, 106.709284],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_bda432e7e4b1ca9f3658179a94848b70 = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_14\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_f81145c93026e005048462946f46cef9.setIcon(div_icon_bda432e7e4b1ca9f3658179a94848b70);
+            
+    
+            var circle_marker_9d27459dcad20f807bc1a31adc9e2caf = L.circleMarker(
+                [10.807596, 106.716359],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_de06425740c7e845993aaf56d2658f56 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_2e8c25f73d42f1f85bfa81e835c0f387 = $(`<div id="html_2e8c25f73d42f1f85bfa81e835c0f387" style="width: 100.0%; height: 100.0%;"><b>HX_15</b> (node_id 15)<br>Nguyễn Gia Trí | Ung Văn Khiêm<br>lat 10.807596, lon 106.716359<br>in/out: 2/1 · cách tâm 892 m</div>`)[0];
+                popup_de06425740c7e845993aaf56d2658f56.setContent(html_2e8c25f73d42f1f85bfa81e835c0f387);
+            
+        
+
+        circle_marker_9d27459dcad20f807bc1a31adc9e2caf.bindPopup(popup_de06425740c7e845993aaf56d2658f56)
+        ;
+
+        
+    
+    
+            circle_marker_9d27459dcad20f807bc1a31adc9e2caf.bindTooltip(
+                `<div>
+                     HX_15
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_b9d3c2c46842fbfa387c32775cbec562 = L.marker(
+                [10.807596, 106.716359],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_6d6aa07b05e86a0811d82e26a975e639 = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_15\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_b9d3c2c46842fbfa387c32775cbec562.setIcon(div_icon_6d6aa07b05e86a0811d82e26a975e639);
+            
+    
+            var circle_marker_b3b1363ee87a82abbe6a2aac2f9404f0 = L.circleMarker(
+                [10.797312, 106.704242],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_673e0d78fdd1798651bbf9f2018898d4 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_0fe67d23a82a08946c335e120054e531 = $(`<div id="html_0fe67d23a82a08946c335e120054e531" style="width: 100.0%; height: 100.0%;"><b>HX_16</b> (node_id 16)<br>Điện Biên Phủ<br>lat 10.797312, lon 106.704242<br>in/out: 1/1 · cách tâm 893 m</div>`)[0];
+                popup_673e0d78fdd1798651bbf9f2018898d4.setContent(html_0fe67d23a82a08946c335e120054e531);
+            
+        
+
+        circle_marker_b3b1363ee87a82abbe6a2aac2f9404f0.bindPopup(popup_673e0d78fdd1798651bbf9f2018898d4)
+        ;
+
+        
+    
+    
+            circle_marker_b3b1363ee87a82abbe6a2aac2f9404f0.bindTooltip(
+                `<div>
+                     HX_16
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_65a6c36035c356e344d567c1811636f0 = L.marker(
+                [10.797312, 106.704242],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_1ded9094ada039d504b55203333b794f = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_16\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_65a6c36035c356e344d567c1811636f0.setIcon(div_icon_1ded9094ada039d504b55203333b794f);
+            
+    
+            var circle_marker_9689468a0fb01a92be70492a4a93c914 = L.circleMarker(
+                [10.793405, 106.70802],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_cae0f7d4bc735c2d26eeb4edf68ec432 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_a78c3621255b52a24ec608d3382b0fc7 = $(`<div id="html_a78c3621255b52a24ec608d3382b0fc7" style="width: 100.0%; height: 100.0%;"><b>HX_17</b> (node_id 17)<br>Xô Viết Nghệ Tĩnh<br>lat 10.793405, lon 106.708020<br>in/out: 1/2 · cách tâm 938 m</div>`)[0];
+                popup_cae0f7d4bc735c2d26eeb4edf68ec432.setContent(html_a78c3621255b52a24ec608d3382b0fc7);
+            
+        
+
+        circle_marker_9689468a0fb01a92be70492a4a93c914.bindPopup(popup_cae0f7d4bc735c2d26eeb4edf68ec432)
+        ;
+
+        
+    
+    
+            circle_marker_9689468a0fb01a92be70492a4a93c914.bindTooltip(
+                `<div>
+                     HX_17
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_d880a7f5c58eb0b8ebb4c16ccb235033 = L.marker(
+                [10.793405, 106.70802],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_4ad1e04d420d952841c3bdc0a56f88ab = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_17\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_d880a7f5c58eb0b8ebb4c16ccb235033.setIcon(div_icon_4ad1e04d420d952841c3bdc0a56f88ab);
+            
+    
+            var circle_marker_745348b54d52c3fa9a7674302581df51 = L.circleMarker(
+                [10.809741, 106.712401],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_1df6e853db733ec44f9444e0dd4b325f = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_1dbb718012a18b35f1d311c01e6a3f80 = $(`<div id="html_1dbb718012a18b35f1d311c01e6a3f80" style="width: 100.0%; height: 100.0%;"><b>HX_18</b> (node_id 18)<br>Xô Viết Nghệ Tĩnh | Ung Văn Khiêm<br>lat 10.809741, lon 106.712401<br>in/out: 1/1 · cách tâm 951 m</div>`)[0];
+                popup_1df6e853db733ec44f9444e0dd4b325f.setContent(html_1dbb718012a18b35f1d311c01e6a3f80);
+            
+        
+
+        circle_marker_745348b54d52c3fa9a7674302581df51.bindPopup(popup_1df6e853db733ec44f9444e0dd4b325f)
+        ;
+
+        
+    
+    
+            circle_marker_745348b54d52c3fa9a7674302581df51.bindTooltip(
+                `<div>
+                     HX_18
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_2344f72d15811df582d3f2574339972a = L.marker(
+                [10.809741, 106.712401],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_8ebab11faf5424fd9d62bb16b88ef699 = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_18\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_2344f72d15811df582d3f2574339972a.setIcon(div_icon_8ebab11faf5424fd9d62bb16b88ef699);
+            
+    
+            var circle_marker_5bd35a575725852a0e8e87789221d414 = L.circleMarker(
+                [10.798529, 106.71977],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_349cfce51c4b0f551cdeda3c5169ebb2 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_5faef6ba3f5861f4175b7f0a9d255845 = $(`<div id="html_5faef6ba3f5861f4175b7f0a9d255845" style="width: 100.0%; height: 100.0%;"><b>HX_19</b> (node_id 19)<br>Điện Biên Phủ<br>lat 10.798529, lon 106.719770<br>in/out: 1/1 · cách tâm 962 m</div>`)[0];
+                popup_349cfce51c4b0f551cdeda3c5169ebb2.setContent(html_5faef6ba3f5861f4175b7f0a9d255845);
+            
+        
+
+        circle_marker_5bd35a575725852a0e8e87789221d414.bindPopup(popup_349cfce51c4b0f551cdeda3c5169ebb2)
+        ;
+
+        
+    
+    
+            circle_marker_5bd35a575725852a0e8e87789221d414.bindTooltip(
+                `<div>
+                     HX_19
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_b306b21811940feb780dec0f296ece07 = L.marker(
+                [10.798529, 106.71977],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_41399f989265f1d6593f014691a2d0ae = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_19\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_b306b21811940feb780dec0f296ece07.setIcon(div_icon_41399f989265f1d6593f014691a2d0ae);
+            
+    
+            var circle_marker_b5238dd0539e42744b3d3a5289ad51ea = L.circleMarker(
+                [10.792216, 106.706729],
+                {"bubblingMouseEvents": true, "color": "#111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#ffd700", "fillOpacity": 1.0, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 7, "stroke": true, "weight": 2}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+        var popup_21415a23c6418448c49a5d11b65640e2 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_d3bd30816cb160b6709e7533bf5daa7d = $(`<div id="html_d3bd30816cb160b6709e7533bf5daa7d" style="width: 100.0%; height: 100.0%;"><b>HX_20</b> (node_id 20)<br>Xô Viết Nghệ Tĩnh<br>lat 10.792216, lon 106.706729<br>in/out: 1/0 · cách tâm 1117 m</div>`)[0];
+                popup_21415a23c6418448c49a5d11b65640e2.setContent(html_d3bd30816cb160b6709e7533bf5daa7d);
+            
+        
+
+        circle_marker_b5238dd0539e42744b3d3a5289ad51ea.bindPopup(popup_21415a23c6418448c49a5d11b65640e2)
+        ;
+
+        
+    
+    
+            circle_marker_b5238dd0539e42744b3d3a5289ad51ea.bindTooltip(
+                `<div>
+                     HX_20
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_3bb61fcf1a84730c61d9035fdb14a3cf = L.marker(
+                [10.792216, 106.706729],
+                {
+}
+            ).addTo(feature_group_745d9c37778dbbff3b27a6b2e48e2f6b);
+        
+    
+            var div_icon_2fa563586a2a1d673abfcf2c498fb5b3 = L.divIcon({
+  "html": "\u003cdiv style=\"font:bold 11px sans-serif;color:#111;text-shadow:0 0 3px #fff\"\u003eHX_20\u003c/div\u003e",
+  "iconSize": [48, 14],
+  "iconAnchor": [-8, 18],
+  "className": "empty",
+});
+        
+    
+                marker_3bb61fcf1a84730c61d9035fdb14a3cf.setIcon(div_icon_2fa563586a2a1d673abfcf2c498fb5b3);
+            
+    
+            feature_group_745d9c37778dbbff3b27a6b2e48e2f6b.addTo(map_9275db0bfae4e2e7bd822faf0a0c5127);
+        
+    
+            var layer_control_e43adbb1036ed745d788bf6c360b1b29_layers = {
+                base_layers : {
+                    "OpenStreetMap" : tile_layer_a2fc11f5371832263c4b61a96ceca00f,
+                    "N\u1ec1n x\u00e1m nh\u1ea1t (Esri)" : tile_layer_ecf396c78c95d88af31850fdbd985769,
+                    "\u1ea2nh v\u1ec7 tinh (Esri)" : tile_layer_fd9d15b3d018e0cc97adf6d8e4799bbd,
+                },
+                overlays :  {
+                    "T\u00e2m H\u00e0ng Xanh + b\u00e1n k\u00ednh 1000 m" : feature_group_8596190a98154a39e5b6a79e4ea19499,
+                    "\u003cspan style=\"color:#9467bd;font-size:16px\"\u003e\u25a0\u003c/span\u003e B\u1ea1ch \u0110\u1eb1ng" : feature_group_2870a3412b586125a0fa33c02c4f570a,
+                    "\u003cspan style=\"color:#ff7f0e;font-size:16px\"\u003e\u25a0\u003c/span\u003e Nguy\u1ec5n Gia Tr\u00ed" : feature_group_bbbb689009e32f01039fc96c88227b11,
+                    "\u003cspan style=\"color:#8c564b;font-size:16px\"\u003e\u25a0\u003c/span\u003e Ung V\u0103n Khi\u00eam" : feature_group_2fff611a110068aed1585c09cf1d9e5a,
+                    "\u003cspan style=\"color:#d62728;font-size:16px\"\u003e\u25a0\u003c/span\u003e X\u00f4 Vi\u1ebft Ngh\u1ec7 T\u0129nh" : feature_group_7c200fca202227ab6fc4359c90c69243,
+                    "\u003cspan style=\"color:#2ca02c;font-size:16px\"\u003e\u25a0\u003c/span\u003e \u0110inh B\u1ed9 L\u0129nh" : feature_group_788f68a5335dc2dc363263ebbae3c513,
+                    "\u003cspan style=\"color:#1f77b4;font-size:16px\"\u003e\u25a0\u003c/span\u003e \u0110i\u1ec7n Bi\u00ean Ph\u1ee7" : feature_group_960a8d7c50659336ae33e7e320d8a637,
+                    "\u003cspan style=\"color:#e377c2;font-size:16px\"\u003e\u25a0\u003c/span\u003e C\u1ea7u v\u01b0\u1ee3t H\u00e0ng Xanh" : feature_group_fb03fd0f26a283a6e48e5f2781c2e9a0,
+                    "N\u00fat giao HX_01\u2013HX_20" : feature_group_745d9c37778dbbff3b27a6b2e48e2f6b,
+                },
+            };
+            let layer_control_e43adbb1036ed745d788bf6c360b1b29 = L.control.layers(
+                layer_control_e43adbb1036ed745d788bf6c360b1b29_layers.base_layers,
+                layer_control_e43adbb1036ed745d788bf6c360b1b29_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": false,
+  "autoZIndex": true,
+}
+            ).addTo(map_9275db0bfae4e2e7bd822faf0a0c5127);
+
+        
+    
+            var measure_control_b0f2f137c6b969b7475dcdc15e8b2b2d = new L.Control.Measure(
+                {
+  "position": "topright",
+  "primaryLengthUnit": "meters",
+  "secondaryLengthUnit": "miles",
+  "primaryAreaUnit": "sqmeters",
+  "secondaryAreaUnit": "acres",
+});
+            map_9275db0bfae4e2e7bd822faf0a0c5127.addControl(measure_control_b0f2f137c6b969b7475dcdc15e8b2b2d);
+
+            // Workaround for using this plugin with Leaflet>=1.8.0
+            // https://github.com/ljagis/leaflet-measure/issues/171
+            L.Control.Measure.include({
+                _setCaptureMarkerIcon: function () {
+                    // disable autopan
+                    this._captureMarker.options.autoPanOnFocus = false;
+                    // default function
+                    this._captureMarker.setIcon(
+                        L.divIcon({
+                            iconSize: this._map.getSize().multiplyBy(2)
+                        })
+                    );
+                },
+            });
+
+        
+    
+            L.control.fullscreen(
+                {
+  "position": "topleft",
+  "title": "Full Screen",
+  "titleCancel": "Exit Full Screen",
+  "forceSeparateButton": false,
+}
+            ).addTo(map_9275db0bfae4e2e7bd822faf0a0c5127);
+        
+</script>
+</html>

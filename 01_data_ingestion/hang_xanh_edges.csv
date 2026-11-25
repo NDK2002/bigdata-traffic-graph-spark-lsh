@@ -30,7 +30,7 @@ E_28,12,5,HX_12,HX_05,Xô Viết Nghệ Tĩnh,primary,2,309.15,True,True,60
 E_29,12,17,HX_12,HX_17,Xô Viết Nghệ Tĩnh,primary,2,311.99,True,True,60
 E_30,13,6,HX_13,HX_06,Bạch Đằng,primary,3,404.8,True,True,60
 E_31,14,4,HX_14,HX_04,Đinh Bộ Lĩnh / Cầu Đinh Bộ Lĩnh,primary,4,594.79,True,False,60
-E_32,15,10,HX_15,HX_10,Nguyễn Gia Trí,tertiary,2,370.59,True,True,60
+E_32,15,10,HX_15,HX_10,Nguyễn Gia Trí,tertiary,2,370.59,False,True,60
 E_33,16,3,HX_16,HX_03,Điện Biên Phủ,trunk,3,725.01,True,True,60
 E_34,17,12,HX_17,HX_12,Xô Viết Nghệ Tĩnh,primary,2,313.02,True,True,60
 E_35,17,20,HX_17,HX_20,Xô Viết Nghệ Tĩnh,primary,2,200.51,True,False,60
