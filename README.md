@@ -28,9 +28,21 @@ Toàn bộ biểu mẫu tuân thủ chuẩn văn bản CITD/UIT và đáp ứng 
 | 1 | [De_Cuong_Chi_Tiet_Do_An_Phan_Tich_Du_Lieu_Lon.md](De_Cuong_Chi_Tiet_Do_An_Phan_Tich_Du_Lieu_Lon.md) | Thuyết minh Đề cương chi tiết 7 mục + lộ trình `Tuần 4 – Tuần 9` (Markdown). |
 | 2 | [De_Cuong_Chi_Tiet_Do_An_Phan_Tich_Du_Lieu_Lon.docx](De_Cuong_Chi_Tiet_Do_An_Phan_Tich_Du_Lieu_Lon.docx) | Bản Đề cương Word định dạng bảng chuẩn **CITD/UIT** (`Table 0` Quốc hiệu + `Table 1` 8x2) sẵn sàng ký duyệt. |
 | 3 | [Ke_Hoach_Thuc_Hien_Do_An_Phan_Tich_Du_Lieu_Lon.xlsx](Ke_Hoach_Thuc_Hien_Do_An_Phan_Tich_Du_Lieu_Lon.xlsx) | Bảng theo dõi tiến độ `Tuần 4 – Tuần 9` (`11/11 – 20/12/2026`, cột `SV tự đánh giá` / `GV đánh giá`). |
-| 4 | [Mau_Bao_Cao_Tuan_Phan_Tich_Du_Lieu_Lon.docx](Mau_Bao_Cao_Tuan_Phan_Tich_Du_Lieu_Lon.docx) | Mẫu báo cáo tiến độ tuần chuẩn CITD điền sẵn danh sách 4 thành viên Nhóm 11. |
-| 5 | [Khung_Bao_Cao_Do_An_Phan_Tich_Du_Lieu_Lon.docx](Khung_Bao_Cao_Do_An_Phan_Tich_Du_Lieu_Lon.docx) | Khung quyển Báo cáo Word chuẩn bìa/style CITD, dàn ý **> 40 trang** khớp sheet `YeuCau` (`Mở đầu`, `Ch1 + Gap`, `Ch2 > 13p`, `Ch3 > 13p`, `Kết luận ~2p`, `TLTK`). |
-| 6 | [Khung_Slide_Bao_Cao_Phan_Tich_Du_Lieu_Lon.pptx](Khung_Slide_Bao_Cao_Phan_Tich_Du_Lieu_Lon.pptx) | Bộ khung **26 Slide** (đạt ngưỡng `25–30 slide`) kế thừa theme CITD, phân công đều 4 thành viên phục vụ Video thuyết trình 20–30 phút. |
+| 4 | [Bao_Cao_Tuan_4_Phan_Tich_Du_Lieu_Lon.docx](Bao_Cao_Tuan_4_Phan_Tich_Du_Lieu_Lon.docx) | Báo cáo tiến độ Tuần 4 chính thức (chuẩn biểu mẫu CITD/UIT, bảng 3 cột). |
+| 5 | [Bao_Cao_Tuan_5_Phan_Tich_Du_Lieu_Lon.docx](Bao_Cao_Tuan_5_Phan_Tich_Du_Lieu_Lon.docx) | Báo cáo tiến độ Tuần 5 chính thức (chuẩn biểu mẫu CITD/UIT, cập nhật nghiệm thu PR #6). |
+| 6 | [Mau_Bao_Cao_Tuan_Phan_Tich_Du_Lieu_Lon.docx](Mau_Bao_Cao_Tuan_Phan_Tich_Du_Lieu_Lon.docx) | Mẫu báo cáo tiến độ tuần chuẩn CITD điền sẵn danh sách 4 thành viên Nhóm 11. |
+| 7 | [Khung_Bao_Cao_Do_An_Phan_Tich_Du_Lieu_Lon.docx](Khung_Bao_Cao_Do_An_Phan_Tich_Du_Lieu_Lon.docx) | Khung quyển Báo cáo Word chuẩn bìa/style CITD, dàn ý **> 40 trang** khớp sheet `YeuCau` (`Mở đầu`, `Ch1 + Gap`, `Ch2 > 13p`, `Ch3 > 13p`, `Kết luận ~2p`, `TLTK`). |
+| 8 | [Khung_Slide_Bao_Cao_Phan_Tich_Du_Lieu_Lon.pptx](Khung_Slide_Bao_Cao_Phan_Tich_Du_Lieu_Lon.pptx) | Bộ khung **26 Slide** (đạt ngưỡng `25–30 slide`) kế thừa theme CITD, phân công đều 4 thành viên phục vụ Video thuyết trình 20–30 phút. |
+
+### Cấu trúc Phân hệ Mã nguồn & Tài liệu trên Repository
+
+| Thư mục | Mục đích & Các thành phần chính |
+| :--- | :--- |
+| `01_data_ingestion/` | Thu thập dữ liệu giao thông thô, trích xuất cấu trúc đồ thị mạng lưới đường Hàng Xanh (`20` nút giao, `37` cạnh) và cào dữ liệu thời tiết Open-Meteo. |
+| `02_pyspark_gigo/` | Pipeline tiền xử lý PySpark, kiểm tra môi trường (`spark_env_check.py`), Data Contract lưu trữ cột Parquet phân vùng tháng theo chuẩn Snappy. |
+| `03_benchmarks_similarity/` | Khung đo kiểm tài nguyên `benchmark_profiler.py`, smoke-test và benchmark mở rộng $1\text{M} \to 17\text{M}$ dòng (`benchmark_scaling_pandas_vs_spark.py`) kèm biểu đồ đối chứng Pandas vs. PySpark. |
+| `04_hcm_dashboard/` | Trực quan hóa bản đồ GIS Folium (`build_gis_inspection_map.py`), kiểm chứng tọa độ 20 nút Hàng Xanh và 207 cảm biến METR-LA. |
+| `05_report_slides/` | Bản thảo học thuật Mở đầu & Chương 1, chuyên đề đồ thị không gian $G=(V, E, W)$, biên bản họp GVHD và tài liệu khảo sát 5 công trình IEEE/ACM. |
 
 ---
 
@@ -58,8 +70,8 @@ Nguồn và quy chuẩn tái tạo dữ liệu được ghi nhận chi tiết t�
 ## 4. Checklist Nghiệm thu Bắt buộc (Hạn chót 20/12/2026)
 
 - [x] Chốt đề tài độc lập Hướng 3 & cập nhật Hàng 33 [Final_Project.xlsx](../Final_Project.xlsx)
-- [ ] **Tuần 4 (`11/11 – 17/11`):** Tải `METR-LA` & `PEMS-BAY`, trích xuất đồ thị `OSMnx` TP.HCM & API `Open-Meteo`
-- [ ] **Tuần 5 (`18/11 – 24/11`):** Pipeline **PySpark GIGO + Parquet**, hoàn thành **Mở đầu + Chương 1**
-- [ ] **Tuần 6 (`25/11 – 01/12`):** Thi giữa kỳ 90p, Benchmark **Pandas vs. PySpark (`1M–17M` dòng)** & hoàn thành **Chương 2 (> 13 trang)**
+- [x] **Tuần 4 (`11/11 – 17/11`):** Tải `METR-LA` & `PEMS-BAY`, trích xuất đồ thị `OSMnx` TP.HCM & API `Open-Meteo` (Đã hoàn thành 100%, xuất bản Báo cáo Tuần 4)
+- [x] **Tuần 5 (`18/11 – 24/11`):** Pipeline **PySpark GIGO + Parquet**, hoàn thành **Mở đầu + Chương 1**, bản đồ GIS Folium & hoàn tất các PR #1–#4, PR #6 (Đạt ~92%)
+- [ ] **Tuần 6 (`25/11 – 01/12`):** Thi giữa kỳ 90p, hoàn thành **Chương 2 (> 13 trang)** *(Phần Benchmark `Pandas vs. PySpark` 1M–17M dòng đã hoàn thành trước tại PR #6)*
 - [ ] **Tuần 7 (`02/12 – 08/12`):** Đối chứng **KNN vs. LSH vs. ANN (FAISS)**, Case Study TP.HCM & hoàn thành **Chương 3 (> 13 trang)**
 - [ ] **Tuần 8–9 (`09/12 – 20/12`):** Web Dashboard `Streamlit/Folium`, xuất **Báo cáo > 40 trang (Word + PDF đồng nhất)**, **Slide 26 trang**, **Video Demo (10–15p)** & **Video Thuyết trình 4 thành viên (20–30p)**.

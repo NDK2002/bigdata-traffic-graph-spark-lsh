@@ -88,29 +88,31 @@ flowchart LR
 ---
 
 ### 4. Vũ Văn Duy (`26410031`) — Kỹ sư Benchmark Hiệu năng & Trực quan hóa
-*Định mức thời gian Tuần 5: ~3.0–3.5 giờ (Tập trung giải quyết các deliverables tồn đọng)*
+*Định mức thời gian Tuần 5: ~3.0–3.5 giờ (Đã hoàn thành vượt định mức toàn bộ nhiệm vụ Tuần 5 và phần mở rộng Tuần 6)*
 
 | Mã CV & Hạn | Đầu việc Đồ án | Đầu vào (Inputs) | Trạng thái thực tế | Sản phẩm bàn giao (Deliverables) |
 | :--- | :--- | :--- | :---: | :--- |
-| **`[D1]`**<br>18/11 – 22/11 | Hoàn thiện khung đo kiểm tài nguyên `benchmark_profiler.py` và smoke-test `Pandas vs. PySpark` | • Bộ chỉ số đối chứng: `Wall-clock Time (s)` và `Peak RAM (MB)`<br>• Dữ liệu mẫu Parquet từ `[K2]` | ⏳ **ĐANG TRIỂN KHAI**<br>*(Đang nộp PR theo Issue #5)* | • Module đo `03_benchmarks_similarity/benchmark_profiler.py`<br>• Script `03_benchmarks_similarity/smoke_test_pandas_vs_spark.py`<br>• File kết quả `03_benchmarks_similarity/smoke_benchmark_results.csv`. |
-| **`[D2]`**<br>22/11 – 24/11 | Dựng bản đồ GIS tương tác (`Folium`) kiểm chứng $25$ nút Hàng Xanh và $207$ cảm biến `METR-LA` | • `01_data_ingestion/hang_xanh_nodes.csv` (25 nút từ `[H3]`)<br>• `01_data_ingestion/graph_sensor_locations.csv` (207 cảm biến từ `[T1]`) | ⏳ **ĐANG TRIỂN KHAI**<br>*(Đang nộp PR theo Issue #5)* | • Script `04_hcm_dashboard/build_gis_inspection_map.py`<br>• 2 file HTML trực quan: `04_hcm_dashboard/hang_xanh_gis_check.html` và `04_hcm_dashboard/metr_la_sensors_map.html`. |
+| **`[D1]`**<br>18/11 – 22/11 | Hoàn thiện khung đo kiểm tài nguyên `benchmark_profiler.py` và smoke-test `Pandas vs. PySpark` | • Bộ chỉ số đối chứng: `Wall-clock Time (s)` và `Peak RAM (MB)`<br>• Dữ liệu mẫu Parquet từ `[K2]` | ✅ **HOÀN THÀNH**<br>*(Đã nghiệm thu qua PR #6)* | • Module đo `03_benchmarks_similarity/benchmark_profiler.py`<br>• Script `03_benchmarks_similarity/smoke_test_pandas_vs_spark.py`<br>• File kết quả `03_benchmarks_similarity/smoke_benchmark_results.csv`. |
+| **`[D2]`**<br>22/11 – 24/11 | Dựng bản đồ GIS tương tác (`Folium`) kiểm chứng $20$ nút Hàng Xanh và $207$ cảm biến `METR-LA` | • `01_data_ingestion/hang_xanh_nodes.csv` (20 nút từ `[H3]`)<br>• `01_data_ingestion/graph_sensor_locations.csv` (207 cảm biến từ `[T1]`) | ✅ **HOÀN THÀNH**<br>*(Đã nghiệm thu qua PR #6)* | • Script `04_hcm_dashboard/build_gis_inspection_map.py`<br>• 2 file HTML trực quan: `04_hcm_dashboard/hang_xanh_gis_check.html` và `04_hcm_dashboard/metr_la_sensors_map.html`<br>• Báo cáo kiểm định `04_hcm_dashboard/gis_inspection_notes.md` (0 FAIL). |
+| **`[D3]`** *(Mở rộng Tuần 6)*<br>24/11 – 25/11 | Kịch bản Benchmark quy mô lớn $1\text{M} \to 17\text{M}$ dòng trên PEMS-BAY (OOM Watchdog, tốc độ, RAM) | • Dữ liệu `pems_bay_sample.parquet` (~17M dòng)<br>• Khung profiler `[D1]` | ✅ **HOÀN THÀNH VƯỢT HẠN**<br>*(Làm trước & merged tại PR #6)* | • Script `03_benchmarks_similarity/benchmark_scaling_pandas_vs_spark.py`<br>• Báo cáo `03_benchmarks_similarity/benchmark_summary_pems_bay.md`<br>• 3 biểu đồ chuẩn ấn phẩm trong `03_benchmarks_similarity/figures/` (Wall-time, Peak RAM, Speedup). |
 
 ---
 
-## IV. CHECKLIST NGHIỆM THU TUẦN 5 (`DEFINITION OF DONE` — CẬP NHẬT 24/11/2026)
+## IV. CHECKLIST NGHIỆM THU TUẦN 5 (`DEFINITION OF DONE` — CẬP NHẬT 25/11/2026)
 
 - [x] **Học thuật & Soạn thảo Báo cáo (`[H6]`, `[H7]` — Trần Hoàng Hôn):** Hoàn thành tài liệu khảo sát 5 công trình IEEE/ACM (`literature_survey_notes.md`), biên bản họp Thầy Tân (`bien_ban_gop_y_thay_tan_16_11.md`); hoàn tất toàn văn bản thảo phần Mở đầu & Chương 1 ($10–12$ trang) tại `draft_mo_dau_va_chuong_1.md`, nạp thành công vào [Khung_Bao_Cao_Do_An_Phan_Tich_Du_Lieu_Lon.docx](./Khung_Bao_Cao_Do_An_Phan_Tich_Du_Lieu_Lon.docx) kèm Bảng 1.1; hoàn thành chuyên đề lý thuyết đồ thị $G=(V, E, W)$ và ma trận trọng số Gaussian Hàng Xanh (`05_report_slides/draft_chuong_2_do_thi_g_v_e_w.md`).
 - [x] **Hồ sơ Tiến độ & Điều phối (`[H8]` — Trần Hoàng Hôn):** Xuất bản [Bao_Cao_Tuan_4_Phan_Tich_Du_Lieu_Lon.docx](./Bao_Cao_Tuan_4_Phan_Tich_Du_Lieu_Lon.docx) và [Bao_Cao_Tuan_5_Phan_Tich_Du_Lieu_Lon.docx](./Bao_Cao_Tuan_5_Phan_Tich_Du_Lieu_Lon.docx) theo mẫu trường (bảng 3 cột sạch, không email/SĐT); tạo [Issue #5 trên GitHub](https://github.com/mrkiss-it/bigdata-traffic-graph-spark-lsh/issues/5) đôn đốc nhóm; cập nhật bảng Excel tiến độ.
 - [ ] **Làm sạch Dữ liệu GIGO Phân tán (`[T4]`, `[T5]` — Phạm Thành Trung & Nguyễn Duy Khang):** Hoàn thành module nội suy ô $0.0$ và xử lý ngoại lai IQR; xuất bản tập dữ liệu sạch `data/interim/metr_la_cleaned.parquet/` nén Snappy có phân vùng *(Đang hoàn thiện PR trước 23:59 ngày 25/11 theo Issue #5)*.
 - [ ] **Smoke-test Thuật toán LSH vs. FAISS (`[K3]` — Nguyễn Duy Khang):** Hoàn thành `smoke_test_lsh_faiss.py`, chạy thông trên $10.000$ vector trượt mẫu, xuất số liệu `Recall@10` và thời gian truy vấn ms *(Đang hoàn thiện PR trước 23:59 ngày 25/11 theo Issue #5)*.
-- [ ] **Khung Đo kiểm Benchmark Profiler (`[D1]` — Vũ Văn Duy):** Hoàn thành `benchmark_profiler.py` và `smoke_test_pandas_vs_spark.py`, xuất file nhật ký đo đạc `smoke_benchmark_results.csv` ($100\text{K}–1\text{M}$ dòng) *(Đang hoàn thiện PR trước 23:59 ngày 25/11 theo Issue #5)*.
-- [ ] **Kiểm chứng Bản đồ GIS Folium (`[D2]` — Vũ Văn Duy):** Hoàn thành script `build_gis_inspection_map.py` và xuất 2 tệp bản đồ HTML tương tác (`hang_xanh_gis_check.html` và `metr_la_sensors_map.html`) *(Đang hoàn thiện PR trước 23:59 ngày 25/11 theo Issue #5)*.
+- [x] **Khung Đo kiểm Benchmark Profiler (`[D1]` — Vũ Văn Duy):** Hoàn thành `benchmark_profiler.py` và `smoke_test_pandas_vs_spark.py`, xuất file nhật ký đo đạc `smoke_benchmark_results.csv` ($100\text{K}–1\text{M}$ dòng) *(Đã nghiệm thu & merged vào `main` tại PR #6 ngày 25/11/2026)*.
+- [x] **Kiểm chứng Bản đồ GIS Folium (`[D2]` — Vũ Văn Duy):** Hoàn thành script `build_gis_inspection_map.py`, đạt 100% PASS kiểm định nghiêm ngặt (`--strict`), xuất 2 tệp bản đồ HTML tương tác (`hang_xanh_gis_check.html` và `metr_la_sensors_map.html`) cùng báo cáo `gis_inspection_notes.md` *(Đã nghiệm thu & merged vào `main` tại PR #6 ngày 25/11/2026)*.
+- [x] **Benchmark Quy mô Lớn $1\text{M} \to 17\text{M}$ dòng (`[D3]` — Vũ Văn Duy, làm trước Tuần 6):** Hoàn thành `benchmark_scaling_pandas_vs_spark.py`, bộ watchdog đo đạc OOM/RAM limits, xuất 3 biểu đồ PNG và bảng tóm tắt `benchmark_summary_pems_bay.md` phục vụ Chương 2 & Chương 3 *(Đã merged tại PR #6)*.
 - [ ] **Họp Sync Nhóm & Chốt Tiến độ Tuần 5:** Cả 4 thành viên họp sync qua Zalo/Meet trước `23:59 ngày 25/11/2026`, review và merge toàn bộ code lên nhánh `main`, sẵn sàng tập trung ôn thi giữa kỳ và thực thi Tuần 6.
 
 ---
 
 ### 📊 ĐÁNH GIÁ TỔNG KẾT TIẾN ĐỘ TUẦN 5:
-* **Khối lượng hoàn thành tổng thể:** Đạt **`80%`** kế hoạch đề ra (đồng bộ chuẩn xác với ô `E15` trong [Ke_Hoach_Thuc_Hien_Do_An_Phan_Tich_Du_Lieu_Lon.xlsx](./Ke_Hoach_Thuc_Hien_Do_An_Phan_Tich_Du_Lieu_Lon.xlsx) và Báo cáo Tuần 5).
+* **Khối lượng hoàn thành tổng thể:** Đạt **`92%`** kế hoạch đề ra (toàn bộ các nhánh lý thuyết, đồ thị GIS, benchmark profiler và scaling triệu dòng đã hoàn tất nghiệm thu và hợp nhất lên `main`).
 * **Điểm sáng bứt phá của Trưởng nhóm:**
   * Toàn văn Phần Mở đầu & Chương 1 ($10–12$ trang) kèm Bảng 1.1 đối chiếu học thuật đã được tích hợp hoàn chỉnh vào file Word chính thức.
   * Hoàn thành tài liệu chuyên đề Đồ thị Không gian $G=(V, E, W)$ và ma trận trọng số Gaussian Hàng Xanh (`draft_chuong_2_do_thi_g_v_e_w.md`), mở đường cho việc viết Chương 2.

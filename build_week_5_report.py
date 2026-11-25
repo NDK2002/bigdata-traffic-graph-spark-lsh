@@ -170,7 +170,7 @@ add_bullet_point(
 add_bullet_point(
     doc,
     "Thiết kế Khung Đo kiểm Tài nguyên & Bản đồ GIS Tương tác",
-    "Hoàn thiện module benchmark_profiler.py đo lường khách quan Wall-clock Time và Peak RAM qua psutil phục vụ so sánh hiệu năng Pandas vs. PySpark; xây dựng script trực quan hóa bản đồ GIS Folium kiểm chứng 20 nút Hàng Xanh và 207 cảm biến METR-LA.",
+    "Hoàn thiện module benchmark_profiler.py đo lường khách quan Wall-clock Time và Peak RAM qua psutil phục vụ so sánh hiệu năng Pandas vs. PySpark; xây dựng script trực quan hóa bản đồ GIS Folium kiểm chứng 20 nút Hàng Xanh và 207 cảm biến METR-LA đạt 100% PASS kiểm định nghiêm ngặt; hoàn thành trước kịch bản mở rộng 1M–17M dòng trên PEMS-BAY (PR #6 đã merged).",
 )
 add_bullet_point(
     doc,
@@ -198,7 +198,7 @@ add_bullet_point(
 add_bullet_point(
     doc,
     "Vũ Văn Duy (MSSV: 26410031)",
-    "Chịu trách nhiệm [D1] Hoàn thiện khung đo kiểm tài nguyên benchmark_profiler.py và smoke-test đối chứng Pandas vs. PySpark trên lát cắt dữ liệu mẫu; [D2] Dựng bản đồ tương tác GIS Folium kiểm chứng thực địa nút giao Hàng Xanh và mạng lưới cảm biến METR-LA.",
+    "Chịu trách nhiệm [D1] Hoàn thiện khung đo kiểm tài nguyên benchmark_profiler.py và smoke-test đối chứng Pandas vs. PySpark trên lát cắt dữ liệu mẫu; [D2] Dựng bản đồ tương tác GIS Folium kiểm chứng thực địa nút giao Hàng Xanh và mạng lưới cảm biến METR-LA; [D3] Triển khai sớm kịch bản scaling benchmark 1M–17M dòng kèm OOM watchdog (toàn bộ đã hoàn tất và hợp nhất tại PR #6).",
 )
 
 # --- 3. Báo cáo quá trình thực hiện ---
@@ -216,12 +216,12 @@ add_bullet_point(
 add_bullet_point(
     doc,
     "Về Thuật toán LSH/ANN & Khung Đo lường Hiệu năng",
-    "Đã hoàn thành thiết kế khung kiểm thử hiệu năng benchmark_profiler.py (đo độ trễ mili-giây và bộ nhớ RAM đỉnh thực tế RSS bằng psutil); xây dựng xong module đối chứng thuật toán LSH và FAISS HNSW trên tập vector trượt mẫu, tạo tiền đề vững chắc cho đợt thử nghiệm lớn ở Tuần 6.",
+    "Đã hoàn thành thiết kế khung kiểm thử hiệu năng benchmark_profiler.py (đo độ trễ mili-giây và bộ nhớ RAM đỉnh thực tế RSS bằng psutil); xây dựng xong module đối chứng thuật toán LSH và FAISS HNSW trên tập vector trượt mẫu; đặc biệt đã hoàn thành trước đợt thực nghiệm lớn 1M–17M dòng trên PEMS-BAY với 3 biểu đồ chuẩn ấn phẩm.",
 )
 add_bullet_point(
     doc,
     "Về Quản trị Dự án & Kiểm soát Tiến độ",
-    "Xuất bản thành công Báo cáo Tuần 4 và Báo cáo Tuần 5 theo đúng biểu mẫu chuẩn của trường (đã chuẩn hóa bảng danh sách 3 cột, không thông tin cá nhân ngoài danh mục); mở GitHub Issue #5 kiểm soát chặt chẽ tiến độ nộp mã nguồn của các thành viên; cập nhật tiến độ Tuần 4 đạt 100% và Tuần 5 đạt 80%.",
+    "Xuất bản thành công Báo cáo Tuần 4 và Báo cáo Tuần 5 theo đúng biểu mẫu chuẩn của trường (đã chuẩn hóa bảng danh sách 3 cột, không thông tin cá nhân ngoài danh mục); mở GitHub Issue #5 kiểm soát chặt chẽ tiến độ; hoàn tất review và merge thành công PR #6; cập nhật tiến độ Tuần 4 đạt 100% và Tuần 5 đạt 90%.",
 )
 
 # --- 4. Khó khăn / Thách thức và Giải pháp ---
