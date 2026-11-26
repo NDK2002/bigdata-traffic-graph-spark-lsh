@@ -109,7 +109,7 @@ Nhằm xây dựng nền tảng lý luận vững chắc, đề tài tiến hàn
 ├──────────────────────────────────────┼──────────────────────────────────────────┤
 │ 3. TRUY VẤN LÁNG GIỀNG GẦN ĐÚNG LỚN  │ 4. MÔ HÌNH HÓA ĐỒ THỊ ĐÔ THỊ THỰC TẾ     │
 │    • Indyk & Motwani (STOC 1998): LSH│    • Boeing (CEUS 2017): OSMnx           │
-│    • Johnson et al. (IEEE 2019): FAISS│    • Đồ thị Hàng Xanh + API Open-Meteo   │
+│    • Johnson et al. (IEEE 2021): FAISS│    • Đồ thị Hàng Xanh + API Open-Meteo   │
 └──────────────────────────────────────┴──────────────────────────────────────────┘
 ```
 
@@ -119,7 +119,7 @@ Nhằm xây dựng nền tảng lý luận vững chắc, đề tài tiến hàn
    Công trình kinh điển *Apache Spark: A Unified Engine for Big Data Processing* trên tạp chí Communications of the ACM đã chứng minh tính ưu việt của mô hình tập dữ liệu phân tán có khả năng phục hồi (RDD) và cơ chế thực thi lười biếng (Lazy Evaluation) thông qua đồ thị DAG. Spark cho phép lưu trữ trung gian trực tiếp trên RAM, khắc phục triệt để nhược điểm ghi đĩa liên tục của Hadoop MapReduce. Đề tài ứng dụng PySpark 3.5 và bộ tối ưu hóa Catalyst để xử lý song song các tác vụ nạp, lọc GIGO và chuyển đổi Parquet.
 3. **Tìm kiếm láng giềng gần đúng bằng hàm băm — Indyk & Motwani (1998) [3]:**  
    Trong hội nghị STOC 1998, Indyk và Motwani đã giới thiệu kỹ thuật băm nhạy cảm vị trí (Locality-Sensitive Hashing — LSH). Bằng cách thiết kế các hàm băm sao cho các điểm gần nhau trong không gian đa chiều có xác suất rơi vào cùng một thùng băm cao, LSH giúp giảm độ phức tạp tìm kiếm từ $O(N \cdot d)$ xuống $O(d \cdot N^{1/(1+\epsilon)})$. Đề tài ứng dụng thuật toán `BucketedRandomProjectionLSH` của Spark MLlib để gom cụm các cửa sổ trượt giao thông tương đồng.
-4. **Tìm kiếm tương đồng vector quy mô tỷ phần tử — Johnson et al. (2019) [4]:**  
+4. **Tìm kiếm tương đồng vector quy mô tỷ phần tử — Johnson et al. (2021) [4]:**  
    Công trình *Billion-scale similarity search with GPUs* trên IEEE Transactions on Big Data giới thiệu thư viện FAISS. Bằng cách khai thác tối đa tập lệnh phần cứng SIMD (AVX2) và cấu trúc đồ thị phân cấp HNSW (*Hierarchical Navigable Small World*), FAISS cho phép tra cứu vector với độ trễ chỉ vài micro-giây. Đề tài sử dụng FAISS làm chuẩn đối chứng vàng (*Ground Truth Benchmark*) để so sánh với thuật toán LSH phân tán của Spark.
 5. **Mô hình hóa đồ thị đô thị từ OpenStreetMap — Boeing (2017) [5]:**  
    Geoff Boeing phát triển thư viện OSMnx, cho phép tải và dựng đồ thị đường bộ đô thị với đầy đủ thuộc tính topo và hình học. Đề tài sử dụng OSMnx để trích xuất mạng lưới đường bộ cụm Hàng Xanh (Bình Thạnh, TP.HCM), tạo tiền đề cho việc xây dựng Dashboard GIS trực quan hóa.
@@ -128,7 +128,7 @@ Nhằm xây dựng nền tảng lý luận vững chắc, đề tài tiến hàn
 
 *Bảng 1.1: Bảng tổng hợp đối chiếu các công trình nghiên cứu liên quan*
 
-| Tiêu chí đối chiếu | Li et al. (2018) [1] | Zaharia et al. (2016) [2] | Indyk & Motwani (1998) [3] | Johnson et al. (2019) [4] | Boeing (2017) [5] | **Đề tài Nhóm 11 (2026)** |
+| Tiêu chí đối chiếu | Li et al. (2018) [1] | Zaharia et al. (2016) [2] | Indyk & Motwani (1998) [3] | Johnson et al. (2021) [4] | Boeing (2017) [5] | **Đề tài Nhóm 11 (2026)** |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Trọng tâm nghiên cứu** | Dự báo giao thông bằng DCRNN | Hạ tầng tính toán phân tán Spark | Lý thuyết băm đa chiều LSH | Chỉ mục vector cực nhanh FAISS | Đồ thị đường bộ OSMnx | **Pipeline Big Data + LSH/ANN + TP.HCM** |
 | **Quy mô dữ liệu** | $7\text{M} - 17\text{M}$ dòng | Petabytes | Vector đa chiều | Hàng tỷ vector | Đồ thị thành phố | **$1\text{M} \to 17\text{M}$ dòng & 25 nút HCM** |

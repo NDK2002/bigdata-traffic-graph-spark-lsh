@@ -37,7 +37,7 @@
 
 ### 2. Apache Spark: Điện toán Phân tán trên Bộ nhớ chính (In-Memory Distributed Engine)
 * **Trích dẫn chuẩn ACM:**  
-  M. Zaharia, R. S. Xin, P. Wendell, T. Das, M. Armbrust, A. Dave, X. Meng, R. Rosen, S. Venkataraman, M. J. Franklin, A. Ghodsi, J. Gonzalez, S. Shenker, and I. Stoica, "Apache Spark: A unified engine for big data processing," *Communications of the ACM*, vol. 59, no. 11, pp. 56–65, Oct. 2016. DOI: `10.1145/2934664`.
+  M. Zaharia, R. S. Xin, P. Wendell, T. Das, M. Armbrust, A. Dave, X. Meng, J. Rosen, S. Venkataraman, M. J. Franklin, A. Ghodsi, J. Gonzalez, S. Shenker, and I. Stoica, "Apache Spark: A unified engine for big data processing," *Communications of the ACM*, vol. 59, no. 11, pp. 56–65, Oct. 2016. DOI: `10.1145/2934664`.
 * **Đóng góp khoa học cốt lõi:**
   * Đề xuất mô hình trừu tượng tập dữ liệu phân tán có khả năng phục hồi (**RDD — Resilient Distributed Datasets**) và cấu trúc **DataFrame/Dataset** dựa trên đồ thị có hướng không chu trình (**DAG Execution Engine**).
   * Tối ưu hóa truy vấn thông qua bộ tối ưu hóa **Catalyst Optimizer** và cơ chế sinh mã nội tuyến **Tungsten**, cho phép tính toán lặp và phân tích luồng trong RAM nhanh hơn từ $10\times$ đến $100\times$ so với mô hình Hadoop MapReduce truyền thống.
@@ -48,7 +48,7 @@
 
 ```bibtex
 @article{zaharia2016apache,
-  author    = {Matei Zaharia and Reynold S. Xin and Patrick Wendell and Tathagata Das and Michael Armbrust and Anurag Dave and Xiangrui Meng and R. Rosen and Shivaram Venkataraman and Michael J. Franklin and Ali Ghodsi and Joseph Gonzalez and Scott Shenker and Ion Stoica},
+  author    = {Matei Zaharia and Reynold S. Xin and Patrick Wendell and Tathagata Das and Michael Armbrust and Ankur Dave and Xiangrui Meng and Josh Rosen and Shivaram Venkataraman and Michael J. Franklin and Ali Ghodsi and Joseph Gonzalez and Scott Shenker and Ion Stoica},
   title     = {Apache Spark: A Unified Engine for Big Data Processing},
   journal   = {Communications of the {ACM}},
   volume    = {59},
@@ -63,7 +63,7 @@
 
 ### 3. Locality-Sensitive Hashing (LSH): Tìm kiếm Láng giềng gần đúng trong Không gian Đa chiều
 * **Trích dẫn chuẩn ACM:**  
-  P. Indyk and R. Motwani, "Approximate nearest neighbors: towards removing the curse of dimensionality," in *Proc. 30th Annu. ACM Symp. Theory of Comput. (STOC)*, Dallas, TX, USA, 1998, pp. 604–613. DOI: `10.1145/2766983.2768768`.
+  P. Indyk and R. Motwani, "Approximate nearest neighbors: towards removing the curse of dimensionality," in *Proc. 30th Annu. ACM Symp. Theory of Comput. (STOC)*, Dallas, TX, USA, 1998, pp. 604–613. DOI: `10.1145/276698.276876`.
 * **Đóng góp khoa học cốt lõi:**
   * Phá vỡ "lời nguyền số chiều" (*Curse of Dimensionality*) trong bài toán tìm kiếm láng giềng gần nhất (Nearest Neighbor Search).
   * Đề xuất họ hàm băm nhạy cảm vị trí **LSH**: hai điểm dữ liệu có khoảng cách Euclidean nhỏ thì xác suất va chạm vào cùng một thùng băm (*hash bucket*) sẽ cao vượt trội so với hai điểm có khoảng cách lớn:
@@ -79,7 +79,7 @@
   booktitle = {Proceedings of the Thirtieth Annual {ACM} Symposium on Theory of Computing ({STOC} '98)},
   pages     = {604--613},
   year      = {1998},
-  doi       = {10.1145/2766983.2768768}
+  doi       = {10.1145/276698.276876}
 }
 ```
 
@@ -87,7 +87,7 @@
 
 ### 4. FAISS: Tìm kiếm Tương đồng Vector Quy mô Tỷ phần tử
 * **Trích dẫn chuẩn IEEE:**  
-  J. Johnson, M. Douze, and H. Jégou, "Billion-scale similarity search with GPUs," *IEEE Transactions on Big Data*, vol. 7, no. 3, pp. 535–547, July 2019. DOI: `10.1109/TBDATA.2019.2921572`.
+  J. Johnson, M. Douze, and H. Jégou, "Billion-scale similarity search with GPUs," *IEEE Transactions on Big Data*, vol. 7, no. 3, pp. 535–547, July–Sept. 2021 (Early Access: June 2019). DOI: `10.1109/TBDATA.2019.2921572`.
 * **Đóng góp khoa học cốt lõi:**
   * Giới thiệu thư viện nguồn mở **FAISS** (Facebook AI Similarity Search) chuyên biệt hóa cho việc lập chỉ mục và truy vấn vector dày đặc đa chiều với hiệu năng cực đại trên CPU (AVX2/AVX-512) và GPU (CUDA).
   * Triển khai các cấu trúc chỉ mục tiên tiến:
@@ -99,14 +99,16 @@
   * Làm thước đo đối chứng chuẩn vàng (*Ground Truth & Gold Standard*) để so sánh định lượng với PySpark LSH về ba chỉ số: **Độ chính xác (Recall@K)**, **Thời gian phản hồi (Query Latency ms)** và **Mức độ chiếm dụng bộ nhớ (Index RAM MB)**.
 
 ```bibtex
-@article{johnson2019billion,
+@article{johnson2021billion,
   author    = {Jeff Johnson and Matthijs Douze and Herv{\'e} J{\'e}gou},
   journal   = {{IEEE} Transactions on Big Data},
   title     = {Billion-Scale Similarity Search with {GPUs}},
-  year      = {2019},
+  year      = {2021},
+  month     = {jul},
   volume    = {7},
   number    = {3},
   pages     = {535--547},
+  note      = {Early Access: June 2019},
   doi       = {10.1109/TBDATA.2019.2921572}
 }
 ```
@@ -144,7 +146,7 @@
 | **1** | **Li et al. (2018)**<br>*(ICLR)* | DCRNN, Graph Convolution, Seq2Seq | `METR-LA` (7.1M)<br>`PEMS-BAY` (16.9M) | Đưa ra chuẩn benchmark đồ thị giao thông quốc tế. | Dữ liệu định dạng HDF5/Pickle cồng kềnh, không phân vùng; chưa có giải pháp xử lý phân tán dữ liệu lớn. |
 | **2** | **Zaharia et al. (2016)**<br>*(ACM)* | RDD, DataFrame DAG, In-Memory Engine | Terabytes / Petabytes | Đột phá về tốc độ tính toán song song trong bộ nhớ và khả năng chịu lỗi. | Là nền tảng hạ tầng chung; cần thiết kế pipeline chuyên biệt cho dữ liệu cảm biến chuỗi thời gian đồ thị. |
 | **3** | **Indyk & Motwani (1998)**<br>*(STOC)* | Locality-Sensitive Hashing (LSH) | Lý thuyết & vector thực nghiệm | Phá vỡ lời nguyền số chiều, giảm thời gian tìm kiếm từ $O(N)$ xuống tiệm cận hằng số. | Thuật toán có tính ngẫu nhiên (chấp nhận đánh đổi độ chính xác Recall để lấy tốc độ); cần đối chứng thực nghiệm. |
-| **4** | **Johnson et al. (2019)**<br>*(IEEE TBD)* | FAISS, Inverted File (IVF), PQ, HNSW | Triệu đến Tỷ vector | Tối ưu hóa phần cứng cực độ, tốc độ tra cứu vector nhanh nhất hiện nay. | Vận hành tập trung trên một node máy đơn (CPU/GPU), chưa tích hợp sẵn trong pipeline phân tán Spark. |
+| **4** | **Johnson et al. (2021)**<br>*(IEEE TBD)* | FAISS, Inverted File (IVF), PQ, HNSW | Triệu đến Tỷ vector | Tối ưu hóa phần cứng cực độ, tốc độ tra cứu vector nhanh nhất hiện nay. | Vận hành tập trung trên một node máy đơn (CPU/GPU), chưa tích hợp sẵn trong pipeline phân tán Spark. |
 | **5** | **Boeing (2017)**<br>*(Elsevier)* | OSMnx, NetworkX, Không gian GIS | Bản đồ đô thị toàn cầu | Trích xuất đồ thị đường bộ thực tế chuẩn xác, giữ nguyên tọa độ GIS. | Thuần túy là đồ thị tĩnh; chưa kết hợp chuỗi thời gian vận tốc lớn và dữ liệu thời tiết khí tượng động. |
 
 ---
