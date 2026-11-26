@@ -79,7 +79,8 @@ def run_dataset(spark, source: Path, args, save) -> list[dict]:
     import faiss
 
     start = time.perf_counter()
-    x, _ = k3.windows_to_numpy(k3.sliding_windows(spark, source, args.window, args.stride, args.keep_zero))
+    x = k3.windows_to_numpy(k3.sliding_windows(spark, source, args.window, args.stride, args.keep_zero),
+                            args.window)
     vectorize_s = round(time.perf_counter() - start, 2)
     print(f"\n=== {source.name}: {len(x):,} cửa sổ × {x.shape[1]} chiều | vectorize {vectorize_s}s ===")
 

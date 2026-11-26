@@ -82,7 +82,7 @@ Trễ trung bình của Exact KNN ở mốc 10.000 (METR-LA 0,117 ms, PEMS-BAY 0
 
 - [ ] Chạy lại trên `metr_la_cleaned.parquet` của `[T5]` khi PR được merge (`--input ... --keep-zero` nếu dữ liệu đã chuẩn hóa), so sánh với kết quả trên dữ liệu thô ở trên.
 - [ ] Lặp lại ≥ 3 lần mỗi cấu hình, báo cáo trung vị (lượt này chỉ 1 lần).
-- [ ] Mở rộng lên `--stride 1`: METR-LA cho **6.275.355** vector (đã kiểm tra vectorizer chạy được), đúng quy mô "hàng triệu vector" của đề cương.
+- [ ] Mở rộng lên `--stride 1`: METR-LA cho **6.275.355** vector, PEMS-BAY **16.924.298** vector, đúng quy mô "hàng triệu vector" của đề cương. `[K4]` đã đổi `windows_to_numpy()` sang Parquet trung gian để bước này chạy được trên VM 7,8 GB; giới hạn bộ nhớ HNSW và lệnh chạy ở [huong_dan_toi_uu_spark_va_lat_cat.md](../02_pyspark_gigo/huong_dan_toi_uu_spark_va_lat_cat.md) §5.3.
 - [ ] HNSW: thêm `efConstruction` ∈ {100, 200}; vẽ đường cong Recall@10 – độ trễ cho Chương 3 (dữ liệu có sẵn trong CSV).
 - [ ] Spark LSH: thử `bucketLength` < 2 cùng `numHashTables` 16–32 để tìm điểm có tỷ lệ ứng viên < 50% mà recall vẫn chấp nhận được; đo join theo lô với `driver.memory` lớn hơn hoặc trên YARN.
 - [ ] Bàn giao CSV cho `[D4]`/Duy để đưa tab "LSH/ANN" vào Dashboard.

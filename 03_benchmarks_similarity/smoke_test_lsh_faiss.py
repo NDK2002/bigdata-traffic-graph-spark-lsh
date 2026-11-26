@@ -112,14 +112,41 @@ def sliding_windows(spark, source: str | Path, window: int = 12, stride: int | N
     return df.select("sensor_id", "start_ts", "end_ts", "values")
 
 
-def windows_to_numpy(df) -> tuple[np.ndarray, list[str]]:
-    """Thu cửa sổ về driver: ma trận float32 (n, window) + nhãn `sensor_id@end_ts`."""
-    pdf = df.orderBy("end_ts", "sensor_id").toPandas()
-    if pdf.empty:
-        raise RuntimeError("Không tạo được cửa sổ nào; kiểm tra nguồn dữ liệu và --keep-zero")
-    x = np.ascontiguousarray(np.stack(pdf["values"].to_numpy()).astype(np.float32))
-    labels = (pdf["sensor_id"].astype(str) + "@" + pdf["end_ts"].astype(str)).tolist()
-    return x, labels
+def windows_to_numpy(df, window: int, scratch: str | Path | None = None) -> np.ndarray:
+    """Thu cửa sổ về driver thành ma trận float32 (n, window), thứ tự (end_ts, sensor_id).
+
+    Không dùng toPandas(): cột array<double> thành mảng object (một ndarray mỗi dòng) và kết quả phải nằm
+    trọn trong heap JVM driver trước khi sang Python. Với stride 1, cách đó cần ~6,3 GB RAM cho 6,3M cửa sổ
+    METR-LA và hết bộ nhớ với ~16M cửa sổ PEMS-BAY ([K4]). Ở đây executor ghi `window` cột float32 ra Parquet
+    tạm (sắp xếp toàn cục, mỗi part-file một khoảng liên tiếp), rồi pyarrow đọc thẳng từng file vào ma trận
+    đã cấp phát sẵn.
+    """
+    import shutil
+    import tempfile
+
+    import pyarrow.parquet as pq
+    from pyspark.sql import functions as F
+
+    tmp_root = Path(scratch) if scratch else PROJECT / "data/interim/bench/tmp"
+    tmp_root.mkdir(parents=True, exist_ok=True)
+    out = Path(tempfile.mkdtemp(prefix="windows_", dir=tmp_root))
+    try:
+        cols = [F.col("values")[i].cast("float").alias(f"v{i}") for i in range(window)]
+        df.orderBy("end_ts", "sensor_id").select(*cols).write.mode("overwrite").parquet(to_uri(out))
+        files = sorted(out.glob("part-*.parquet"))
+        n = sum(pq.ParquetFile(f).metadata.num_rows for f in files)
+        if n == 0:
+            raise RuntimeError("Không tạo được cửa sổ nào; kiểm tra nguồn dữ liệu và --keep-zero")
+        x = np.empty((n, window), dtype=np.float32)
+        pos = 0
+        for f in files:
+            table = pq.read_table(f)
+            for j in range(window):
+                x[pos:pos + table.num_rows, j] = table.column(j).to_numpy()
+            pos += table.num_rows
+        return x
+    finally:
+        shutil.rmtree(out, ignore_errors=True)
 
 
 def split_base_queries(x: np.ndarray, n_base: int | None, n_queries: int, seed: int):
@@ -348,8 +375,9 @@ def add_common_args(p: argparse.ArgumentParser) -> None:
     p.add_argument("--seed", type=int, default=11)
     p.add_argument("--master", default="local[*]")
     p.add_argument("--driver-memory", default="4g")
-    p.add_argument("--shuffle-partitions", type=int, default=48,
-                   help="spark.sql.shuffle.partitions; [K1] đặt 8, quá ít cho approxSimilarityJoin quy mô lớn")
+    p.add_argument("--shuffle-partitions", type=int, default=None,
+                   help="spark.sql.shuffle.partitions; mặc định 8 × số lõi theo [K4] (48 trên VM 6 lõi). "
+                        "[K1] đặt 8, quá ít cho approxSimilarityJoin quy mô lớn")
 
 
 def parse_args() -> argparse.Namespace:
@@ -364,20 +392,17 @@ def parse_args() -> argparse.Namespace:
 
 
 def build_session(args):
-    from spark_env_check import build_spark  # cấu hình Spark chuẩn của [K1]
+    from spark_tuning import build_tuned_spark  # cấu hình [K1] + tinh chỉnh quy mô triệu dòng [K4]
 
     os.environ.setdefault("PYSPARK_PYTHON", sys.executable)
-    spark = build_spark(args.master, args.driver_memory)
-    spark.conf.set("spark.app.name", "Nhom11-K3-lsh_faiss")
-    spark.conf.set("spark.sql.shuffle.partitions", str(args.shuffle_partitions))
-    return spark
+    return build_tuned_spark(args.master, args.driver_memory, "Nhom11-K3-lsh_faiss", args.shuffle_partitions)
 
 
 def load_vectors(spark, args) -> tuple[np.ndarray, str, float]:
     source = Path(args.input) if args.input else default_source()
     keep_zero = args.keep_zero
     start = time.perf_counter()
-    x, _ = windows_to_numpy(sliding_windows(spark, source, args.window, args.stride, keep_zero))
+    x = windows_to_numpy(sliding_windows(spark, source, args.window, args.stride, keep_zero), args.window)
     elapsed = time.perf_counter() - start
     print(f"Nguồn: {source} | keep_zero={keep_zero} | {len(x):,} cửa sổ × {x.shape[1]} chiều "
           f"| vectorize {elapsed:.1f}s")
