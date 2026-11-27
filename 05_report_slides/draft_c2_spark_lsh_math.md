@@ -133,7 +133,7 @@ $$T_{\text{exact}}(N, d, k) = \mathcal{O}(N \cdot d + N \log k), \qquad M_{\text
 
 $$\|\mathbf{x} - \mathbf{q}\|^2 = \|\mathbf{x}\|^2 + \|\mathbf{q}\|^2 - 2\,\mathbf{x}^{\top}\mathbf{q}$$
 
-để tận dụng phép nhân ma trận BLAS. Khai triển này gây **triệt tiêu số học** (*catastrophic cancellation*) trong dấu phẩy động 32 bit: sai số tuyệt đối xấp xỉ $\varepsilon_{\text{fp32}} \cdot \|\mathbf{x}\|^2$ với $\varepsilon_{\text{fp32}} \approx 6 \times 10^{-8}$. Với vector vận tốc $\approx 58$ mph × $12$ chiều, $\|\mathbf{x}\|^2 \approx 4 \times 10^4$, sai số khoảng cách quan sát được lên tới $\sim 10^{-3}$ mph — đủ để đảo thứ tự những láng giềng sát nhau. Đề tài khắc phục bằng ba biện pháp: (i) **ground truth** được tính riêng bằng vét cạn `float64`; (ii) trước khi lập chỉ mục FAISS, dữ liệu được **trừ vector trung bình** $\boldsymbol{\mu}$ — phép tịnh tiến không đổi khoảng cách, $\|(\mathbf{x}-\boldsymbol{\mu}) - (\mathbf{q}-\boldsymbol{\mu})\| = \|\mathbf{x}-\mathbf{q}\|$, nhưng giảm $\|\mathbf{x}\|^2$ và do đó giảm sai số; (iii) phương pháp Exact KNN lấy $4k$ ứng viên từ `IndexFlatL2` rồi **tính lại khoảng cách bằng `float64`** và giữ $k$ phần tử gần nhất. Biện pháp (iii) cần thiết với tập dày đặc: trên PEMS-BAY $1{,}41$ triệu vector, riêng `IndexFlatL2` chỉ đạt recall@10 $= 0{,}995$ so với ground truth `float64` vì nhiều láng giềng cách nhau dưới $10^{-3}$ mph.
+để tận dụng phép nhân ma trận BLAS. Khai triển này gây **triệt tiêu số học** (*catastrophic cancellation*) trong dấu phẩy động 32 bit: sai số tuyệt đối trên **bình phương khoảng cách** $\|\mathbf{x} - \mathbf{q}\|^2$ xấp xỉ $\delta \approx \varepsilon_{\text{fp32}} \cdot \|\mathbf{x}\|^2$ với $\varepsilon_{\text{fp32}} \approx 6 \times 10^{-8}$. Với vector vận tốc $\approx 58$ mph × $12$ chiều, $\|\mathbf{x}\|^2 \approx 4 \times 10^4$ nên $\delta \approx 2{,}4 \times 10^{-3}\ \text{mph}^2$; sau khi lấy căn bậc hai, sai số khoảng cách $\|\mathbf{x} - \mathbf{q}\|$ vào cỡ $\delta / (2d) \sim 10^{-3}$ mph khi $d \approx 1$ mph và có thể tới $\sqrt{\delta} \approx 0{,}05$ mph với các cặp láng giềng rất sát nhau ($d \to 0$) — đủ để đảo thứ tự và làm hụt recall. Đề tài khắc phục bằng ba biện pháp: (i) **ground truth** được tính riêng bằng vét cạn `float64`; (ii) trước khi lập chỉ mục FAISS, dữ liệu được **trừ vector trung bình** $\boldsymbol{\mu}$ — phép tịnh tiến không đổi khoảng cách, $\|(\mathbf{x}-\boldsymbol{\mu}) - (\mathbf{q}-\boldsymbol{\mu})\| = \|\mathbf{x}-\mathbf{q}\|$, nhưng giảm $\|\mathbf{x}\|^2$ và do đó giảm sai số; (iii) phương pháp Exact KNN lấy $4k$ ứng viên từ `IndexFlatL2` rồi **tính lại khoảng cách bằng `float64`** và giữ $k$ phần tử gần nhất. Biện pháp (iii) cần thiết với tập dày đặc: trên PEMS-BAY $1{,}41$ triệu vector, riêng `IndexFlatL2` chỉ đạt recall@10 $= 0{,}995$ so với ground truth `float64` vì nhiều láng giềng sát nhau bị sai số triệt tiêu đảo thứ tự.
 
 ### 2.4.3. Băm nhạy cảm vị trí (LSH): định nghĩa và định lý khuếch đại
 
@@ -155,7 +155,7 @@ Hàm $P_{\text{cand}}$ có dạng chữ S theo $p$: chọn $K, L$ phù hợp s�
 
 $$\rho = \frac{\ln(1/p_1)}{\ln(1/p_2)} < 1, \qquad K = \log_{1/p_2} N, \qquad L = N^{\rho},$$
 
-bài toán láng giềng gần đúng $(c, r)$ được giải với xác suất hằng số, thời gian truy vấn $\mathcal{O}(N^{\rho} \cdot (d + K))$ và bộ nhớ $\mathcal{O}(N^{1+\rho} + N d)$ — **dưới tuyến tính** theo $N$, khác với $\mathcal{O}(N d)$ của vét cạn.
+bài toán láng giềng gần đúng $(c, r)$ được giải với xác suất hằng số, bộ nhớ $\mathcal{O}(N^{1+\rho} + N d)$ và thời gian truy vấn **dưới tuyến tính** theo $N$: $\mathcal{O}(N^{\rho} \cdot (d + K))$ khi mỗi hàm băm đơn tính trong $\mathcal{O}(1)$ (như lấy mẫu bit Hamming trong [3]), hoặc $\mathcal{O}(d \cdot K \cdot N^{\rho}) = \mathcal{O}(d \cdot N^{\rho} \log_{1/p_2} N)$ với họ chiếu ngẫu nhiên $p$-ổn định dưới đây (mỗi phép chiếu tốn $\mathcal{O}(d)$) — nhỏ hơn hẳn $\mathcal{O}(N d)$ của vét cạn.
 
 ### 2.4.4. Họ hàm băm cho khoảng cách Euclid và Cosine
 
@@ -192,7 +192,7 @@ Spark cung cấp hai cách truy vấn:
 * `approxNearestNeighbors(dataset, key, k)`: lọc các dòng có ít nhất một giá trị băm trùng với `key`, tính khoảng cách thật, sắp xếp và lấy $k$ dòng đầu. Mỗi truy vấn là **một Spark job quét toàn bộ** bảng đã băm (không có chỉ mục tra cứu theo khóa), nên độ trễ có cận dưới là chi phí lập lịch job, cỡ hàng chục đến hàng trăm mili-giây.
 * `approxSimilarityJoin(A, B, threshold)`: "nổ" (*explode*) mỗi vector thành $L$ cặp `(chỉ số bảng, giá trị băm)` và thực hiện **equi-join phân tán** trên cặp này, sau đó lọc theo ngưỡng khoảng cách. Đây là chế độ Spark LSH được thiết kế cho xử lý **theo lô** quy mô lớn; chi phí được chia đều cho nhiều truy vấn.
 
-**Minh họa thực nghiệm sơ bộ (`[K3]`, METR-LA, $N = 10.000$, $200$ truy vấn, $k = 10$).** Với $r = 4$, $L = 8$: Spark LSH đạt recall@10 $\approx 0{,}96$ nhưng tỷ lệ ứng viên $\approx 82\%$ tập dữ liệu, độ trễ $\approx 117$ ms/truy vấn với `approxNearestNeighbors` và $\approx 26$ ms/truy vấn (khấu hao) với `approxSimilarityJoin`; trong khi FAISS HNSW ($M = 32$, $ef_{\text{search}} = 64$) đạt recall@10 $= 1{,}000$ với $\approx 0{,}06$ ms/truy vấn và chỉ tính khoảng cách trên $\approx 7\%$ tập dữ liệu. Số liệu khớp với phân tích trên: chỉ khuếch đại OR trên $d = 12$ chiều không đủ loại điểm xa. Kết quả đầy đủ theo quy mô thuộc Chương 3.
+**Minh họa thực nghiệm sơ bộ (`[K3]`, METR-LA, $N = 10.000$, $200$ truy vấn — riêng `approxNearestNeighbors` đo trên $50$ truy vấn đầu, $k = 10$).** Với $r = 4$, $L = 8$: Spark LSH đạt recall@10 $\approx 0{,}96$ nhưng tỷ lệ ứng viên $\approx 82\%$ tập dữ liệu, độ trễ $\approx 117$ ms/truy vấn với `approxNearestNeighbors` và $\approx 26$ ms/truy vấn (khấu hao) với `approxSimilarityJoin`; trong khi FAISS HNSW ($M = 32$, $ef_{\text{search}} = 64$) đạt recall@10 $= 1{,}000$ với $\approx 0{,}06$ ms/truy vấn và chỉ tính khoảng cách trên $\approx 7\%$ tập dữ liệu. Số liệu khớp với phân tích trên: chỉ khuếch đại OR trên $d = 12$ chiều không đủ loại điểm xa. Kết quả đầy đủ theo quy mô thuộc Chương 3.
 
 ### 2.4.6. Đồ thị thế giới nhỏ phân cấp HNSW và thư viện FAISS
 
@@ -245,7 +245,7 @@ Hai hướng tiếp cận bổ sung cho nhau: Spark LSH phù hợp với phép k
 
 ## TÀI LIỆU THAM KHẢO BỔ SUNG (đánh số tiếp theo Chương 1)
 
-> `[2]` Zaharia et al. (2016), `[3]` Indyk & Motwani (1998), `[4]` Johnson et al. (2019/2021) giữ nguyên như danh mục của Chương 1 tại [literature_survey_notes.md](./literature_survey_notes.md).
+> `[2]` Zaharia et al. (2016), `[3]` Indyk & Motwani (1998), `[4]` Johnson et al. (2021) giữ nguyên như danh mục của Chương 1 tại [literature_survey_notes.md](./literature_survey_notes.md).
 
 [6] J. Dean and S. Ghemawat, "MapReduce: Simplified data processing on large clusters," *Communications of the ACM*, vol. 51, no. 1, pp. 107–113, Jan. 2008. DOI: `10.1145/1327452.1327492`.
 

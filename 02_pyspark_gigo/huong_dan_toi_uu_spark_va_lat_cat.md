@@ -29,7 +29,7 @@ In cấu hình áp dụng cho máy đang dùng bằng `python 02_pyspark_gigo/sp
 | `spark.sql.execution.arrow.pyspark.fallback.enabled` | true | false | false | Lỗi Arrow phải lộ ra, không âm thầm quay về đường chậm. |
 | `spark.sql.shuffle.partitions` | 200 | 8 | 8 × số lõi (48 trên VM 6 lõi) | Xem §3.2. |
 | `spark.sql.adaptive.enabled`, `...coalescePartitions.enabled` | true | true | true (ghi rõ) | AQE gộp partition shuffle nhỏ sau khi biết kích thước thật. |
-| `spark.sql.adaptive.advisoryPartitionSizeInBytes` | 64m | 64m | 16m | Dữ liệu nhỏ trên đĩa (PEMS-BAY 26 MB Snappy), partition sau gộp không nên quá to. |
+| `spark.sql.adaptive.advisoryPartitionSizeInBytes` | 64m | 64m | 16m | Dữ liệu nhỏ trên đĩa (PEMS-BAY 25,4 MB Snappy), partition sau gộp không nên quá to. |
 | `spark.serializer` | Java | Java | Kryo | Nhanh và gọn hơn cho shuffle/cache RDD (đường `pyspark.ml` của LSH). |
 | `spark.driver.maxResultSize` | 1g | 1g | 1g (ghi rõ) | Kết quả lớn đi qua Parquet trung gian thay vì `collect` (§4), nên giữ giới hạn để lỗi sớm. |
 

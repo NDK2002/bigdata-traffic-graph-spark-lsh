@@ -39,7 +39,7 @@ import statistics
 import subprocess
 import sys
 import uuid
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -184,10 +184,12 @@ def resolve_sizes(raw: list[str], source: Path) -> list[int]:
 
 
 def summarise(rows: list[dict]) -> list[dict]:
+    failed_keys = {(r["rows"], r["task"], r["profile"]) for r in rows if r["status"] != "ok"}
     groups = defaultdict(list)
     for r in rows:
-        if r["status"] == "ok":
-            groups[(r["rows"], r["task"], r["profile"])].append(r)
+        key = (r["rows"], r["task"], r["profile"])
+        if r["status"] == "ok" and key not in failed_keys:
+            groups[key].append(r)
     out = []
     for (n, task, profile), rs in sorted(groups.items()):
         out.append({"rows": n, "task": task, "profile": profile,
@@ -213,7 +215,7 @@ def checksum_problems(summary: list[dict]) -> list[str]:
 
 def markdown_table(summary: list[dict], failures: list[dict], profiles: list[str]) -> str:
     cell = {(s["rows"], s["task"], s["profile"]): s for s in summary}
-    failed = {(f["rows"], f["profile"]): f["status"] for f in failures}
+    failed = {(f["rows"], t, f["profile"]): f["status"] for f in failures for t in f["tasks"]}
     head = " | ".join(f"{p} (s)" for p in profiles)
     lines = [f"| Số dòng | Tác vụ | {head} | RAM tuned (MB) | Tăng tốc tuned/k1 | Tăng tốc tuned/default |",
              "| ---: | :--- | " + " | ".join("---:" for _ in profiles) + " | ---: | ---: | ---: |"]
@@ -223,7 +225,7 @@ def markdown_table(summary: list[dict], failures: list[dict], profiles: list[str
         vals = []
         for p in profiles:
             s = cell.get((n, task, p))
-            vals.append(f"{s['wall_s']:.2f}" if s else failed.get((n, p), "—"))
+            vals.append(f"{s['wall_s']:.2f}" if s else failed.get((n, task, p), "—"))
         tuned, k1, dflt = (cell.get((n, task, p)) for p in ("tuned", "k1_baseline", "spark_default"))
         ram = f"{tuned['peak_rss_mb']:.0f}" if tuned else "—"
         sp_k1 = f"{k1['wall_s'] / tuned['wall_s']:.2f}×" if tuned and k1 else "—"
@@ -253,8 +255,8 @@ def main_parent(args: argparse.Namespace) -> int:
                     "rows": n, "status": "ok", "driver_memory": args.driver_memory, "error": "", **r}
                    for r in records]
             if status != "ok":
-                done = {r["task"] for r in records}
-                pending = [t for t in args.tasks if t not in done]
+                counts = Counter(r["task"] for r in records)
+                pending = [t for t in args.tasks if counts[t] < args.repeats]
                 failures.append({"rows": n, "profile": profile, "status": status, "tasks": pending})
                 out += [{"run_id": run_id, "run_started_utc": started, "dataset": dataset, "profile": profile,
                          "rows": n, "task": t, "status": status, "driver_memory": args.driver_memory,
@@ -291,7 +293,10 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--print-conf", action="store_true", help="In cấu hình tuned cho máy này rồi thoát")
     p.add_argument("--worker-profile", choices=PROFILES, help=argparse.SUPPRESS)
     p.add_argument("--worker-slice", help=argparse.SUPPRESS)
-    return p.parse_args()
+    args = p.parse_args()
+    if args.repeats < 1 or args.timeout_s <= 0:
+        p.error("--repeats phải >= 1 và --timeout-s phải > 0")
+    return args
 
 
 def main() -> int:

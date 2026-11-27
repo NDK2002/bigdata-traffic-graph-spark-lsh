@@ -87,7 +87,10 @@ def sliding_windows(spark, source: str | Path, window: int = 12, stride: int | N
     from pyspark.sql import functions as F
 
     stride = stride or window
-    slot = F.expr(f"floor(unix_seconds(cast(timestamp as timestamp)) / {STEP_SECONDS})")
+    # Dùng timestampdiff trên TIMESTAMP_NTZ để không phụ thuộc spark.sql.session.timeZone (tránh lệch DST).
+    slot = F.expr(
+        f"floor(timestampdiff(SECOND, TIMESTAMP_NTZ '1970-01-01 00:00:00', cast(timestamp as timestamp_ntz)) / {STEP_SECONDS})"
+    )
     w = Window.partitionBy("sensor_id").orderBy("timestamp").rowsBetween(-(window - 1), 0)
     df = (
         spark.read.parquet(to_uri(source))
@@ -103,7 +106,7 @@ def sliding_windows(spark, source: str | Path, window: int = 12, stride: int | N
         .where(((F.col("slot") + 1) % stride) == 0)
         .where(F.size("values") == window)
         .where(
-            F.expr("unix_seconds(cast(end_ts as timestamp)) - unix_seconds(cast(start_ts as timestamp))")
+            F.expr("timestampdiff(SECOND, cast(start_ts as timestamp_ntz), cast(end_ts as timestamp_ntz))")
             == (window - 1) * STEP_SECONDS
         )
     )
@@ -291,68 +294,75 @@ def run_spark_lsh(spark, base: np.ndarray, queries: np.ndarray, true_kth: np.nda
 
     params = f"bucketLength={bucket_length:g};numHashTables={num_tables}"
     base_df = vectors_df(spark, base).repartition(spark.sparkContext.defaultParallelism).cache()
-    base_df.count()
-    raw_mb = spark_cached_mb(spark)  # index_mb = phần cache tăng thêm của bảng đã băm (vector + hash)
-
-    lsh = BucketedRandomProjectionLSH(inputCol="features", outputCol="hashes",
-                                      bucketLength=bucket_length, numHashTables=num_tables, seed=seed)
-    with measure() as m:
-        model = lsh.fit(base_df)
-        hashed = model.transform(base_df).cache()
-        hashed.count()
-    index_mb = round(spark_cached_mb(spark) - raw_mb, 3)
-    common = {"build_s": round(m.wall_s, 4), "index_mb": index_mb, "build_peak_rss_mb": round(m.peak_rss_mb, 1)}
+    hashed = None
     rows = []
+    try:
+        base_df.count()
+        raw_mb = spark_cached_mb(spark)  # index_mb = phần cache tăng thêm của bảng đã băm (vector + hash)
 
-    # 1) approxNearestNeighbors: một Spark job cho mỗi truy vấn.
-    model.approxNearestNeighbors(hashed, Vectors.dense(queries[0].astype(float)), k).count()  # khởi động
-    dists, times = [], []
-    for q in queries[:lsh_queries]:
-        start = time.perf_counter()
-        res = model.approxNearestNeighbors(hashed, Vectors.dense(q.astype(float)), k, distCol="dist")
-        found = np.sort([r["dist"] for r in res.select("dist").collect()])
-        times.append(time.perf_counter() - start)
-        dists.append(found)
-    cand = round(lsh_candidate_frac(model, base, queries, bucket_length), 6)
-    rows.append({"method": "spark_lsh", "params": params, **common, "candidate_frac": cand,
-                 "recall_at_k": recall_at_k(dists, true_kth[:lsh_queries], k), **latency_stats(times)})
+        lsh = BucketedRandomProjectionLSH(inputCol="features", outputCol="hashes",
+                                          bucketLength=bucket_length, numHashTables=num_tables, seed=seed)
+        with measure() as m:
+            model = lsh.fit(base_df)
+            hashed = model.transform(base_df).cache()
+            hashed.count()
+        index_mb = round(spark_cached_mb(spark) - raw_mb, 3)
+        common = {"build_s": round(m.wall_s, 4), "index_mb": index_mb, "build_peak_rss_mb": round(m.peak_rss_mb, 1)}
+        cand = round(lsh_candidate_frac(model, base, queries, bucket_length), 6)
 
-    # 2) approxSimilarityJoin: toàn bộ truy vấn trong một job, ngưỡng hiệu chỉnh từ ground truth.
-    if join_quantile is not None and join_skip_reason:
-        rows.append({"method": "spark_lsh_join", "params": f"{params};{join_skip_reason}", **common,
-                     "status": "skipped", "candidate_frac": cand, "queries_timed": 0, "lat_mean_ms": ""})
-    elif join_quantile is not None:
-        threshold = float(np.quantile(true_kth, join_quantile))
-        q_df = vectors_df(spark, queries).cache()
-        q_df.count()
-        row = {"method": "spark_lsh_join", "params": f"{params};threshold={threshold:.3f}(q{join_quantile:g})",
-               **common, "candidate_frac": cand, "queries_timed": len(queries)}
-        start = time.perf_counter()
-        try:
-            joined = (
-                model.approxSimilarityJoin(hashed, q_df, threshold, distCol="dist")
-                .select(F.col("datasetB.id").alias("qid"), "dist")
-                .withColumn("rank", F.row_number().over(Window.partitionBy("qid").orderBy("dist")))
-                .where(F.col("rank") <= k)
-                .collect()
-            )
-        except Exception as exc:  # noqa: BLE001 — OOM của join là một kết quả cần ghi lại, không dừng cả lượt đo
-            msg = str(exc)
-            row["status"] = "oom" if "OutOfMemory" in msg or "UNABLE_TO_ACQUIRE_MEMORY" in msg else "error"
-            row["lat_mean_ms"] = round((time.perf_counter() - start) * 1000 / len(queries), 4)
-            print(f"   spark_lsh_join {params}: {row['status']} sau {time.perf_counter() - start:.1f}s")
-        else:
-            ms = (time.perf_counter() - start) * 1000 / len(queries)
-            per_query: dict[int, list[float]] = {}
-            for r in joined:
-                per_query.setdefault(r["qid"], []).append(r["dist"])
-            dists = [np.sort(per_query.get(i, [])) for i in range(len(queries))]
-            row.update({"recall_at_k": recall_at_k(dists, true_kth, k), "lat_mean_ms": round(ms, 4),
-                        "qps": round(1000 / ms, 2)})
-        rows.append(row)
-        q_df.unpersist()
-    hashed.unpersist()
-    base_df.unpersist()
+        # 1) approxNearestNeighbors: một Spark job cho mỗi truy vấn.
+        if lsh_queries > 0:
+            model.approxNearestNeighbors(hashed, Vectors.dense(queries[0].astype(float)), k).count()  # khởi động
+            dists, times = [], []
+            for q in queries[:lsh_queries]:
+                start = time.perf_counter()
+                res = model.approxNearestNeighbors(hashed, Vectors.dense(q.astype(float)), k, distCol="dist")
+                found = np.sort([r["dist"] for r in res.select("dist").collect()])
+                times.append(time.perf_counter() - start)
+                dists.append(found)
+            rows.append({"method": "spark_lsh", "params": params, **common, "candidate_frac": cand,
+                         "recall_at_k": recall_at_k(dists, true_kth[:lsh_queries], k), **latency_stats(times)})
+
+        # 2) approxSimilarityJoin: toàn bộ truy vấn trong một job, ngưỡng hiệu chỉnh từ ground truth.
+        if join_quantile is not None and join_skip_reason:
+            rows.append({"method": "spark_lsh_join", "params": f"{params};{join_skip_reason}", **common,
+                         "status": "skipped", "candidate_frac": cand, "queries_timed": 0, "lat_mean_ms": ""})
+        elif join_quantile is not None:
+            threshold = float(np.quantile(true_kth, join_quantile))
+            q_df = vectors_df(spark, queries).cache()
+            try:
+                q_df.count()
+                row = {"method": "spark_lsh_join", "params": f"{params};threshold={threshold:.3f}(q{join_quantile:g})",
+                       **common, "candidate_frac": cand, "queries_timed": len(queries)}
+                start = time.perf_counter()
+                try:
+                    joined = (
+                        model.approxSimilarityJoin(hashed, q_df, threshold, distCol="dist")
+                        .select(F.col("datasetB.id").alias("qid"), "dist")
+                        .withColumn("rank", F.row_number().over(Window.partitionBy("qid").orderBy("dist")))
+                        .where(F.col("rank") <= k)
+                        .collect()
+                    )
+                except Exception as exc:  # noqa: BLE001 — OOM của join là một kết quả cần ghi lại, không dừng cả lượt đo
+                    msg = str(exc)
+                    row["status"] = "oom" if "OutOfMemory" in msg or "UNABLE_TO_ACQUIRE_MEMORY" in msg else "error"
+                    row["lat_mean_ms"] = round((time.perf_counter() - start) * 1000 / len(queries), 4)
+                    print(f"   spark_lsh_join {params}: {row['status']} sau {time.perf_counter() - start:.1f}s")
+                else:
+                    ms = (time.perf_counter() - start) * 1000 / len(queries)
+                    per_query: dict[int, list[float]] = {}
+                    for r in joined:
+                        per_query.setdefault(r["qid"], []).append(r["dist"])
+                    dists = [np.sort(per_query.get(i, [])) for i in range(len(queries))]
+                    row.update({"recall_at_k": recall_at_k(dists, true_kth, k), "lat_mean_ms": round(ms, 4),
+                                "qps": round(1000 / ms, 2)})
+                rows.append(row)
+            finally:
+                q_df.unpersist()
+    finally:
+        if hashed is not None:
+            hashed.unpersist()
+        base_df.unpersist()
     return rows
 
 
@@ -380,6 +390,15 @@ def add_common_args(p: argparse.ArgumentParser) -> None:
                         "[K1] đặt 8, quá ít cho approxSimilarityJoin quy mô lớn")
 
 
+def validate_common_args(p: argparse.ArgumentParser, args: argparse.Namespace) -> None:
+    if args.window < 1 or (args.stride is not None and args.stride < 1):
+        p.error("--window và --stride phải >= 1")
+    if args.n_queries < 1 or args.k < 1:
+        p.error("--n-queries và -k phải >= 1")
+    if args.lsh_queries < 0:
+        p.error("--lsh-queries phải >= 0 (0 để bỏ qua approxNearestNeighbors)")
+
+
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     add_common_args(p)
@@ -388,14 +407,18 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--hash-tables", type=int, default=8, help="Số bảng băm L (OR-amplification)")
     p.add_argument("--hnsw-m", type=int, default=32, help="Số cạnh mỗi nút của đồ thị HNSW")
     p.add_argument("--output", default=str(DEFAULT_OUTPUT))
-    return p.parse_args()
+    args = p.parse_args()
+    validate_common_args(p, args)
+    if args.n_base < args.k:
+        p.error("--n-base phải >= -k")
+    return args
 
 
-def build_session(args):
+def build_session(args, app_name: str = "Nhom11-K3-lsh_faiss"):
     from spark_tuning import build_tuned_spark  # cấu hình [K1] + tinh chỉnh quy mô triệu dòng [K4]
 
     os.environ.setdefault("PYSPARK_PYTHON", sys.executable)
-    return build_tuned_spark(args.master, args.driver_memory, "Nhom11-K3-lsh_faiss", args.shuffle_partitions)
+    return build_tuned_spark(args.master, args.driver_memory, app_name, args.shuffle_partitions)
 
 
 def load_vectors(spark, args) -> tuple[np.ndarray, str, float]:

@@ -64,6 +64,7 @@ def parse_args() -> argparse.Namespace:
                         "driver 4g, join trên PEMS-BAY 1,41M vector hết bộ nhớ và làm sập JVM driver")
     p.add_argument("--output", default=str(DEFAULT_OUTPUT))
     args = p.parse_args()
+    k3.validate_common_args(p, args)
     args.lsh_configs = args.lsh_configs or [(2.0, 8), (4.0, 8), (8.0, 8)]
     return args
 
@@ -141,8 +142,7 @@ def main() -> int:
                for r in rows]
         append_csv(args.output, out, FIELDS + list(env.keys()))
 
-    spark = k3.build_session(args)
-    spark.conf.set("spark.app.name", "Nhom11-K6-knn_lsh_faiss")
+    spark = k3.build_session(args, app_name="Nhom11-K6-knn_lsh_faiss")
     rows: list[dict] = []
     try:
         for source in sources:
