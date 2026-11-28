@@ -133,7 +133,7 @@ $$T_{\text{exact}}(N, d, k) = \mathcal{O}(N \cdot d + N \log k), \qquad M_{\text
 
 $$\|\mathbf{x} - \mathbf{q}\|^2 = \|\mathbf{x}\|^2 + \|\mathbf{q}\|^2 - 2\,\mathbf{x}^{\top}\mathbf{q}$$
 
-để tận dụng phép nhân ma trận BLAS. Khai triển này gây **triệt tiêu số học** (*catastrophic cancellation*) trong dấu phẩy động 32 bit: sai số tuyệt đối trên **bình phương khoảng cách** $\|\mathbf{x} - \mathbf{q}\|^2$ xấp xỉ $\delta \approx \varepsilon_{\text{fp32}} \cdot \|\mathbf{x}\|^2$ với $\varepsilon_{\text{fp32}} \approx 6 \times 10^{-8}$. Với vector vận tốc $\approx 58$ mph × $12$ chiều, $\|\mathbf{x}\|^2 \approx 4 \times 10^4$ nên $\delta \approx 2{,}4 \times 10^{-3}\ \text{mph}^2$; sau khi lấy căn bậc hai, sai số khoảng cách $\|\mathbf{x} - \mathbf{q}\|$ vào cỡ $\delta / (2d) \sim 10^{-3}$ mph khi $d \approx 1$ mph và có thể tới $\sqrt{\delta} \approx 0{,}05$ mph với các cặp láng giềng rất sát nhau ($d \to 0$) — đủ để đảo thứ tự và làm hụt recall. Đề tài khắc phục bằng ba biện pháp: (i) **ground truth** được tính riêng bằng vét cạn `float64`; (ii) trước khi lập chỉ mục FAISS, dữ liệu được **trừ vector trung bình** $\boldsymbol{\mu}$ — phép tịnh tiến không đổi khoảng cách, $\|(\mathbf{x}-\boldsymbol{\mu}) - (\mathbf{q}-\boldsymbol{\mu})\| = \|\mathbf{x}-\mathbf{q}\|$, nhưng giảm $\|\mathbf{x}\|^2$ và do đó giảm sai số; (iii) phương pháp Exact KNN lấy $4k$ ứng viên từ `IndexFlatL2` rồi **tính lại khoảng cách bằng `float64`** và giữ $k$ phần tử gần nhất. Biện pháp (iii) cần thiết với tập dày đặc: trên PEMS-BAY $1{,}41$ triệu vector, riêng `IndexFlatL2` chỉ đạt recall@10 $= 0{,}995$ so với ground truth `float64` vì nhiều láng giềng sát nhau bị sai số triệt tiêu đảo thứ tự.
+để tận dụng phép nhân ma trận BLAS. Khai triển này gây **triệt tiêu số học** (*catastrophic cancellation*) trong dấu phẩy động 32 bit: sai số tuyệt đối trên **bình phương khoảng cách** $\|\mathbf{x} - \mathbf{q}\|^2$ xấp xỉ $\delta \approx \varepsilon_{\text{fp32}} \cdot \|\mathbf{x}\|^2$ với $\varepsilon_{\text{fp32}} \approx 6 \times 10^{-8}$. Với vector vận tốc $\approx 58$ mph × $12$ chiều, $\|\mathbf{x}\|^2 \approx 4 \times 10^4$ nên $\delta \approx 2{,}4 \times 10^{-3}\ \text{mph}^2$; đặt $D = \|\mathbf{x} - \mathbf{q}\|$, sau khi lấy căn bậc hai sai số khoảng cách vào cỡ $\delta / (2D) \sim 10^{-3}$ mph khi $D \approx 1$ mph và có thể tới $\sqrt{\delta} \approx 0{,}05$ mph với các cặp láng giềng rất sát nhau ($D \to 0$) — đủ để đảo thứ tự và làm hụt recall. Đề tài khắc phục bằng ba biện pháp: (i) **ground truth** được tính riêng bằng vét cạn `float64`; (ii) trước khi lập chỉ mục FAISS, dữ liệu được **trừ vector trung bình** $\boldsymbol{\mu}$ — phép tịnh tiến không đổi khoảng cách, $\|(\mathbf{x}-\boldsymbol{\mu}) - (\mathbf{q}-\boldsymbol{\mu})\| = \|\mathbf{x}-\mathbf{q}\|$, nhưng giảm $\|\mathbf{x}\|^2$ và do đó giảm sai số; (iii) phương pháp Exact KNN lấy $4k$ ứng viên từ `IndexFlatL2` rồi **tính lại khoảng cách bằng `float64`** và giữ $k$ phần tử gần nhất. Biện pháp (iii) cần thiết với tập dày đặc: trên PEMS-BAY $1{,}41$ triệu vector, riêng `IndexFlatL2` chỉ đạt recall@10 $= 0{,}995$ so với ground truth `float64` vì nhiều láng giềng sát nhau bị sai số triệt tiêu đảo thứ tự.
 
 ### 2.4.3. Băm nhạy cảm vị trí (LSH): định nghĩa và định lý khuếch đại
 
@@ -163,11 +163,11 @@ bài toán láng giềng gần đúng $(c, r)$ được giải với xác suất
 
 $$h_{\mathbf{a}, b}(\mathbf{x}) = \left\lfloor \frac{\mathbf{a}^{\top}\mathbf{x} + b}{r} \right\rfloor$$
 
-Do phân phối chuẩn là $2$-ổn định, $\mathbf{a}^{\top}\mathbf{x} - \mathbf{a}^{\top}\mathbf{y} \sim c \cdot Z$ với $c = \|\mathbf{x} - \mathbf{y}\|$, $Z \sim \mathcal{N}(0,1)$. Xác suất đụng độ chỉ phụ thuộc $c$:
+Do phân phối chuẩn là $2$-ổn định, $\mathbf{a}^{\top}\mathbf{x} - \mathbf{a}^{\top}\mathbf{y} \sim D \cdot Z$ với $D = \|\mathbf{x} - \mathbf{y}\|$, $Z \sim \mathcal{N}(0,1)$. Xác suất đụng độ chỉ phụ thuộc $D$:
 
-$$p(c) = \int_0^{r} \frac{1}{c}\, f_{|Z|}\!\left(\frac{t}{c}\right)\left(1 - \frac{t}{r}\right) dt = 1 - 2\,\Phi\!\left(-\frac{r}{c}\right) - \frac{2}{\sqrt{2\pi}\,(r/c)}\left(1 - e^{-\frac{(r/c)^2}{2}}\right)$$
+$$p(D) = \int_0^{r} \frac{1}{D}\, f_{|Z|}\!\left(\frac{t}{D}\right)\left(1 - \frac{t}{r}\right) dt = 1 - 2\,\Phi\!\left(-\frac{r}{D}\right) - \frac{2}{\sqrt{2\pi}\,(r/D)}\left(1 - e^{-\frac{(r/D)^2}{2}}\right)$$
 
-trong đó $\Phi$ là hàm phân phối tích lũy chuẩn tắc. $p(c)$ giảm đơn điệu theo $c$ nên họ hàm này là $(r_1, r_2, p(r_1), p(r_2))$-nhạy cảm với mọi $r_1 < r_2$; phân tích số của Datar et al. cho thấy với $r$ chọn phù hợp, $\rho$ nằm dưới $1/c$ (với $c = r_2 / r_1$ là hệ số xấp xỉ).
+trong đó $\Phi$ là hàm phân phối tích lũy chuẩn tắc. $p(D)$ giảm đơn điệu theo $D$ nên họ hàm này là $(r_1, r_2, p(r_1), p(r_2))$-nhạy cảm với mọi $r_1 < r_2$; phân tích số của Datar et al. cho thấy với $r$ chọn phù hợp, $\rho$ nằm dưới $1/c$ (với $c = r_2 / r_1$ là hệ số xấp xỉ).
 
 **(b) Siêu phẳng ngẫu nhiên cho Cosine — SimHash (Charikar [13]).** Với $\mathbf{a} \sim \mathcal{N}(0, I_d)$, $h_{\mathbf{a}}(\mathbf{x}) = \operatorname{sign}(\mathbf{a}^{\top}\mathbf{x})$ cho
 
@@ -181,10 +181,10 @@ Lớp `pyspark.ml.feature.BucketedRandomProjectionLSH` (BRP) cài đặt biến 
 
 $$h_j(\mathbf{x}) = \left\lfloor \frac{\mathbf{v}_j^{\top}\mathbf{x}}{r} \right\rfloor, \qquad \mathbf{v}_j = \frac{\mathbf{g}_j}{\|\mathbf{g}_j\|},\ \mathbf{g}_j \sim \mathcal{N}(0, I_d), \qquad j = 1, \dots, L$$
 
-1. **Vector chiếu được chuẩn hóa về độ dài đơn vị và không có độ lệch $b$.** Hiệu hình chiếu $\mathbf{v}^{\top}(\mathbf{x} - \mathbf{y})$ có phương sai $c^2 / d$ thay vì $c^2$, nên tham số `bucketLength` $r$ của Spark tương ứng với $r\sqrt{d}$ trong công thức của Datar. Thiếu $b$ làm ranh giới thùng cố định; khi lấy trung bình theo vị trí dữ liệu, hành vi xấp xỉ họ (a).
+1. **Vector chiếu được chuẩn hóa về độ dài đơn vị và không có độ lệch $b$.** Hiệu hình chiếu $\mathbf{v}^{\top}(\mathbf{x} - \mathbf{y})$ có phương sai $D^2 / d$ thay vì $D^2$, nên tham số `bucketLength` $r$ của Spark tương ứng với $r\sqrt{d}$ trong công thức của Datar. Thiếu $b$ làm ranh giới thùng cố định; khi lấy trung bình theo vị trí dữ liệu, hành vi xấp xỉ họ (a).
 2. **Chỉ có khuếch đại OR** ($K = 1$): tham số `numHashTables` là $L$. Một vector là ứng viên khi trùng thùng với truy vấn ở **ít nhất một** trong $L$ bảng, nên
 
-$$P_{\text{cand}}(c) = 1 - \big(1 - p(c)\big)^{L}$$
+$$P_{\text{cand}}(D) = 1 - \big(1 - p(D)\big)^{L}$$
 
 Không có khuếch đại AND, $P_{\text{cand}}$ tăng nhanh theo $L$ cho **cả** điểm gần lẫn điểm xa. Trong không gian số chiều thấp ($d = 12$), khi chọn $r$ đủ lớn để giữ recall cao, tỷ lệ ứng viên cũng cao.
 
@@ -192,7 +192,7 @@ Spark cung cấp hai cách truy vấn:
 * `approxNearestNeighbors(dataset, key, k)`: lọc các dòng có ít nhất một giá trị băm trùng với `key`, tính khoảng cách thật, sắp xếp và lấy $k$ dòng đầu. Mỗi truy vấn là **một Spark job quét toàn bộ** bảng đã băm (không có chỉ mục tra cứu theo khóa), nên độ trễ có cận dưới là chi phí lập lịch job, cỡ hàng chục đến hàng trăm mili-giây.
 * `approxSimilarityJoin(A, B, threshold)`: "nổ" (*explode*) mỗi vector thành $L$ cặp `(chỉ số bảng, giá trị băm)` và thực hiện **equi-join phân tán** trên cặp này, sau đó lọc theo ngưỡng khoảng cách. Đây là chế độ Spark LSH được thiết kế cho xử lý **theo lô** quy mô lớn; chi phí được chia đều cho nhiều truy vấn.
 
-**Minh họa thực nghiệm sơ bộ (`[K3]`, METR-LA, $N = 10.000$, $200$ truy vấn — riêng `approxNearestNeighbors` đo trên $50$ truy vấn đầu, $k = 10$).** Với $r = 4$, $L = 8$: Spark LSH đạt recall@10 $\approx 0{,}96$ nhưng tỷ lệ ứng viên $\approx 82\%$ tập dữ liệu, độ trễ $\approx 117$ ms/truy vấn với `approxNearestNeighbors` và $\approx 26$ ms/truy vấn (khấu hao) với `approxSimilarityJoin`; trong khi FAISS HNSW ($M = 32$, $ef_{\text{search}} = 64$) đạt recall@10 $= 1{,}000$ với $\approx 0{,}06$ ms/truy vấn và chỉ tính khoảng cách trên $\approx 7\%$ tập dữ liệu. Số liệu khớp với phân tích trên: chỉ khuếch đại OR trên $d = 12$ chiều không đủ loại điểm xa. Kết quả đầy đủ theo quy mô thuộc Chương 3.
+**Minh họa thực nghiệm sơ bộ (`[K3]`, METR-LA, $N = 10.000$, $200$ truy vấn — riêng `approxNearestNeighbors` đo trên $50$ truy vấn đầu, $k = 10$).** Với $r = 4$, $L = 8$: Spark LSH đạt recall@10 $\approx 0{,}96$ nhưng tỷ lệ ứng viên $\approx 82\%$ tập dữ liệu, độ trễ $\approx 117$ ms/truy vấn với `approxNearestNeighbors` và $\approx 26$ ms/truy vấn (khấu hao) với `approxSimilarityJoin` (ngưỡng khoảng cách hiệu chỉnh ở phân vị $0{,}95$ từ ground truth); trong khi FAISS HNSW ($M = 32$, $ef_{\text{search}} = 64$) đạt recall@10 $= 1{,}000$ với $\approx 0{,}06$ ms/truy vấn và chỉ tính khoảng cách trên $\approx 7\%$ tập dữ liệu. Số liệu khớp với phân tích trên: chỉ khuếch đại OR trên $d = 12$ chiều không đủ loại điểm xa. Kết quả đầy đủ theo quy mô thuộc Chương 3.
 
 ### 2.4.6. Đồ thị thế giới nhỏ phân cấp HNSW và thư viện FAISS
 

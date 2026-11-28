@@ -44,9 +44,12 @@ FIELDS = k3.RESULT_FIELDS[:4] + ["stride", "vectorize_s"] + k3.RESULT_FIELDS[4:]
 def parse_lsh_config(text: str) -> tuple[float, int]:
     try:
         r, tables = text.split(":")
-        return float(r), int(tables)
+        r_val, t_val = float(r), int(tables)
     except ValueError as exc:
         raise argparse.ArgumentTypeError(f"Cấu hình LSH phải có dạng bucketLength:numHashTables, nhận '{text}'") from exc
+    if r_val <= 0 or t_val < 1:
+        raise argparse.ArgumentTypeError(f"Cấu hình LSH cần bucketLength > 0 và numHashTables >= 1, nhận '{text}'")
+    return r_val, t_val
 
 
 def parse_args() -> argparse.Namespace:
@@ -65,12 +68,26 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--output", default=str(DEFAULT_OUTPUT))
     args = p.parse_args()
     k3.validate_common_args(p, args)
+    if any(m < 1 for m in args.hnsw_m):
+        p.error("--hnsw-m phải >= 1")
+    if args.join_max_base < 0:
+        p.error("--join-max-base phải >= 0")
+    for s in args.sizes:
+        if s != "all":
+            try:
+                n = int(s)
+            except ValueError:
+                p.error(f"--sizes không hợp lệ: '{s}' (cần số nguyên hoặc 'all')")
+            if n < args.k:
+                p.error(f"--sizes {n} phải >= -k ({args.k})")
     args.lsh_configs = args.lsh_configs or [(2.0, 8), (4.0, 8), (8.0, 8)]
     return args
 
 
-def resolve_size(size: str, available: int) -> int:
+def resolve_size(size: str, available: int, k: int = 1) -> int:
     n = available if size == "all" else int(size)
+    if n < k:
+        raise ValueError(f"--sizes {size} ({n:,}) nhỏ hơn -k ({k})")
     if n > available:
         raise ValueError(f"--sizes {size} vượt số cửa sổ khả dụng ({available:,})")
     return n
@@ -90,13 +107,13 @@ def run_dataset(spark, source: Path, args, save) -> list[dict]:
     faiss.omp_set_num_threads(os.cpu_count() or 1)
     rows = []
     for size in args.sizes:
-        n = resolve_size(size, len(pool))
+        n = resolve_size(size, len(pool), args.k)
         base = np.ascontiguousarray(pool[:n])
         t0 = time.perf_counter()
         true_kth = k3.exact_kth(base, queries, args.k)
         print(f"-- n_base={n:,}: ground truth {time.perf_counter() - t0:.1f}s", flush=True)
         base_c, queries_c = k3.center(base, queries)
-        size_rows = [k3.run_exact(base_c, queries_c, true_kth, args.k)]
+        size_rows = [k3.run_exact(base_c, queries_c, true_kth, args.k, raw_base=base, raw_queries=queries)]
         if not args.skip_lsh:
             for r, tables in args.lsh_configs:
                 skip = f"n_base>{args.join_max_base}" if n > args.join_max_base else ""

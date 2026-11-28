@@ -83,7 +83,9 @@ def tuned_conf(cores: int | None = None) -> dict[str, str]:
 def build_tuned_spark(master: str = "local[*]", driver_memory: str = "4g", app_name: str = "Nhom11-K4-tuned",
                       shuffle_partitions: int | None = None):
     conf = tuned_conf()
-    if shuffle_partitions:
+    if shuffle_partitions is not None:
+        if shuffle_partitions < 1:
+            raise ValueError(f"shuffle_partitions phải >= 1, nhận {shuffle_partitions}")
         conf["spark.sql.shuffle.partitions"] = str(shuffle_partitions)
     return build_spark(master, driver_memory, conf, app_name)
 
@@ -178,9 +180,19 @@ def parse_records(stdout: str) -> list[dict]:
 def resolve_sizes(raw: list[str], source: Path) -> list[int]:
     import pyarrow.dataset as ds
 
-    files = [source] if source.is_file() else sorted(source.rglob("*.parquet"))
+    if source.is_file():
+        files = [source]
+    else:
+        parts = sorted(p for p in source.iterdir() if p.is_dir() and p.name.startswith("year_month="))
+        files = [f for p in parts for f in sorted(p.glob("*.parquet"))] if parts else sorted(source.rglob("*.parquet"))
     total = ds.dataset(files, format="parquet").count_rows()
-    return sorted({total if s == "all" else min(int(s), total) for s in raw})
+    sizes = set()
+    for s in raw:
+        n = total if s == "all" else int(s)
+        if n < 1:
+            raise ValueError(f"--sizes phải >= 1, nhận '{s}'")
+        sizes.add(min(n, total))
+    return sorted(sizes)
 
 
 def summarise(rows: list[dict]) -> list[dict]:
@@ -195,7 +207,8 @@ def summarise(rows: list[dict]) -> list[dict]:
         out.append({"rows": n, "task": task, "profile": profile,
                     "wall_s": statistics.median(r["wall_s"] for r in rs),
                     "peak_rss_mb": statistics.median(r["peak_rss_mb"] for r in rs),
-                    "result_rows": rs[0]["result_rows"], "checksum": rs[0]["checksum"]})
+                    "result_rows": rs[0]["result_rows"], "checksum": rs[0]["checksum"],
+                    "repeats_checks": [(r["result_rows"], r["checksum"]) for r in rs]})
     return out
 
 
@@ -206,21 +219,33 @@ def checksum_problems(summary: list[dict]) -> list[str]:
     problems = []
     for (n, task), ss in by_key.items():
         ref = ss[0]
-        for s in ss[1:]:
-            if s["result_rows"] != ref["result_rows"] or not math.isclose(
-                    s["checksum"], ref["checksum"], rel_tol=CHECKSUM_REL_TOL):
-                problems.append(f"{task} @ {n:,}: {ref['profile']} và {s['profile']} cho kết quả khác nhau")
+        for s in ss:
+            for rows_i, chk_i in s.get("repeats_checks", [(s["result_rows"], s["checksum"])]):
+                if rows_i != ref["result_rows"] or not math.isclose(
+                        chk_i, ref["checksum"], rel_tol=CHECKSUM_REL_TOL):
+                    if s["profile"] == ref["profile"]:
+                        problems.append(f"{task} @ {n:,}: các lần lặp của {s['profile']} cho kết quả khác nhau")
+                    else:
+                        problems.append(f"{task} @ {n:,}: {ref['profile']} và {s['profile']} cho kết quả khác nhau")
+                    break
     return problems
 
 
 def markdown_table(summary: list[dict], failures: list[dict], profiles: list[str]) -> str:
     cell = {(s["rows"], s["task"], s["profile"]): s for s in summary}
-    failed = {(f["rows"], t, f["profile"]): f["status"] for f in failures for t in f["tasks"]}
+    failed = {}
+    fail_rows_tasks = set()
+    for f in failures:
+        if f.get("failed_task"):
+            failed[(f["rows"], f["failed_task"], f["profile"])] = f["status"]
+            fail_rows_tasks.add((f["rows"], f["failed_task"]))
+        for t in f.get("skipped_tasks", ()):
+            failed[(f["rows"], t, f["profile"])] = "skipped"
+            fail_rows_tasks.add((f["rows"], t))
     head = " | ".join(f"{p} (s)" for p in profiles)
     lines = [f"| Số dòng | Tác vụ | {head} | RAM tuned (MB) | Tăng tốc tuned/k1 | Tăng tốc tuned/default |",
              "| ---: | :--- | " + " | ".join("---:" for _ in profiles) + " | ---: | ---: | ---: |"]
-    for n, task in sorted({(s["rows"], s["task"]) for s in summary} | {(f["rows"], t) for f in failures
-                                                                       for t in f["tasks"]},
+    for n, task in sorted({(s["rows"], s["task"]) for s in summary} | fail_rows_tasks,
                           key=lambda k: (k[0], TASKS.index(k[1]))):
         vals = []
         for p in profiles:
@@ -257,10 +282,13 @@ def main_parent(args: argparse.Namespace) -> int:
             if status != "ok":
                 counts = Counter(r["task"] for r in records)
                 pending = [t for t in args.tasks if counts[t] < args.repeats]
-                failures.append({"rows": n, "profile": profile, "status": status, "tasks": pending})
-                out += [{"run_id": run_id, "run_started_utc": started, "dataset": dataset, "profile": profile,
-                         "rows": n, "task": t, "status": status, "driver_memory": args.driver_memory,
-                         "error": error} for t in pending[:1]]
+                failed_task = pending[0] if pending else args.tasks[-1]
+                skipped_tasks = pending[1:] if pending else []
+                failures.append({"rows": n, "profile": profile, "status": status,
+                                 "failed_task": failed_task, "skipped_tasks": skipped_tasks})
+                out.append({"run_id": run_id, "run_started_utc": started, "dataset": dataset, "profile": profile,
+                            "rows": n, "task": failed_task, "status": status, "driver_memory": args.driver_memory,
+                            "error": error})
             append_csv(args.output, [{f: r.get(f, "") for f in FIELDS} | env for r in out],
                        FIELDS + list(env.keys()))
             rows += out
@@ -272,8 +300,7 @@ def main_parent(args: argparse.Namespace) -> int:
     print(markdown_table(summary, failures, args.profiles))
     for p in problems:
         print("CHECKSUM:", p)
-    unexpected = [f for f in failures if f["status"] == "error"]
-    return 0 if not problems and not unexpected else 1
+    return 0 if not problems and not failures else 1
 
 
 def parse_args() -> argparse.Namespace:
@@ -296,6 +323,16 @@ def parse_args() -> argparse.Namespace:
     args = p.parse_args()
     if args.repeats < 1 or args.timeout_s <= 0:
         p.error("--repeats phải >= 1 và --timeout-s phải > 0")
+    if args.tuned_shuffle_partitions is not None and args.tuned_shuffle_partitions < 1:
+        p.error("--tuned-shuffle-partitions phải >= 1")
+    for s in args.sizes:
+        if s != "all":
+            try:
+                n = int(s)
+            except ValueError:
+                p.error(f"--sizes không hợp lệ: '{s}' (cần số nguyên >= 1 hoặc 'all')")
+            if n < 1:
+                p.error(f"--sizes phải >= 1, nhận {n}")
     return args
 
 

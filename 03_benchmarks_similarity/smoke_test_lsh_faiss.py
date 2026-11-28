@@ -212,7 +212,8 @@ def center(base: np.ndarray, queries: np.ndarray) -> tuple[np.ndarray, np.ndarra
             np.ascontiguousarray((queries - mu).astype(np.float32)))
 
 
-def run_exact(base: np.ndarray, queries: np.ndarray, true_kth: np.ndarray, k: int) -> dict:
+def run_exact(base: np.ndarray, queries: np.ndarray, true_kth: np.ndarray, k: int,
+              raw_base: np.ndarray | None = None, raw_queries: np.ndarray | None = None) -> dict:
     """Vét cạn FAISS + tinh chỉnh float64. Riêng IndexFlatL2 (float32, khai triển chuẩn) đảo thứ tự các láng giềng
     cách nhau < ~1e-3 mph, nên trên PEMS-BAY 1,4M vector chỉ đạt recall 0,995 so với ground truth float64."""
     import faiss
@@ -221,12 +222,14 @@ def run_exact(base: np.ndarray, queries: np.ndarray, true_kth: np.ndarray, k: in
         index = faiss.IndexFlatL2(base.shape[1])
         index.add(base)
     index.search(queries[:10], k)  # khởi động
+    ref_base = base if raw_base is None else raw_base
+    ref_queries = queries if raw_queries is None else raw_queries
     dists, times = [], []
-    for q in queries:
+    for q, q_ref in zip(queries, ref_queries):
         start = time.perf_counter()
         _, ids = index.search(q[None, :], REFINE_FACTOR * k)
-        cand = base[ids[0][ids[0] >= 0]].astype(np.float64)
-        d = np.sort(np.sqrt(((cand - q.astype(np.float64)) ** 2).sum(axis=1)))[:k]
+        cand = ref_base[ids[0][ids[0] >= 0]].astype(np.float64)
+        d = np.sort(np.sqrt(((cand - q_ref.astype(np.float64)) ** 2).sum(axis=1)))[:k]
         times.append(time.perf_counter() - start)
         dists.append(d)
     return {
@@ -265,6 +268,16 @@ def run_hnsw(base: np.ndarray, queries: np.ndarray, true_kth: np.ndarray, k: int
 def spark_cached_mb(spark) -> float:
     infos = spark.sparkContext._jsc.sc().getRDDStorageInfo()
     return round(sum(info.memSize() + info.diskSize() for info in infos) / 1024 ** 2, 3)
+
+
+def safe_unpersist(df) -> None:
+    """Giải phóng cache đồng bộ; bỏ qua lỗi nếu JVM driver đã sập (vd sau OOM)."""
+    if df is None:
+        return
+    try:
+        df.unpersist(blocking=True)
+    except Exception:  # noqa: BLE001 — không che mất bản ghi status=oom đã ghi nhận
+        pass
 
 
 def lsh_candidate_frac(model, base: np.ndarray, queries: np.ndarray, bucket_length: float) -> float:
@@ -358,11 +371,10 @@ def run_spark_lsh(spark, base: np.ndarray, queries: np.ndarray, true_kth: np.nda
                                 "qps": round(1000 / ms, 2)})
                 rows.append(row)
             finally:
-                q_df.unpersist()
+                safe_unpersist(q_df)
     finally:
-        if hashed is not None:
-            hashed.unpersist()
-        base_df.unpersist()
+        safe_unpersist(hashed)
+        safe_unpersist(base_df)
     return rows
 
 
@@ -397,6 +409,12 @@ def validate_common_args(p: argparse.ArgumentParser, args: argparse.Namespace) -
         p.error("--n-queries và -k phải >= 1")
     if args.lsh_queries < 0:
         p.error("--lsh-queries phải >= 0 (0 để bỏ qua approxNearestNeighbors)")
+    if args.join_quantile > 1.0:
+        p.error("--join-quantile phải <= 1.0 (hoặc âm để bỏ qua approxSimilarityJoin)")
+    if args.shuffle_partitions is not None and args.shuffle_partitions < 1:
+        p.error("--shuffle-partitions phải >= 1")
+    if args.ef_construction < 1 or any(ef < 1 for ef in args.ef_search):
+        p.error("--ef-construction và --ef-search phải >= 1")
 
 
 def parse_args() -> argparse.Namespace:
@@ -411,6 +429,8 @@ def parse_args() -> argparse.Namespace:
     validate_common_args(p, args)
     if args.n_base < args.k:
         p.error("--n-base phải >= -k")
+    if args.bucket_length <= 0 or args.hash_tables < 1 or args.hnsw_m < 1:
+        p.error("--bucket-length phải > 0, --hash-tables và --hnsw-m phải >= 1")
     return args
 
 
@@ -439,7 +459,7 @@ def evaluate(spark, x: np.ndarray, n_base: int | None, args) -> list[dict]:
     base, queries = split_base_queries(x, n_base, args.n_queries, args.seed)
     true_kth = exact_kth(base, queries, args.k)
     base_c, queries_c = center(base, queries)
-    rows = [run_exact(base_c, queries_c, true_kth, args.k)]
+    rows = [run_exact(base_c, queries_c, true_kth, args.k, raw_base=base, raw_queries=queries)]
     rows += run_spark_lsh(spark, base, queries, true_kth, args.k, args.bucket_length, args.hash_tables,
                           min(args.lsh_queries, len(queries)),
                           args.join_quantile if args.join_quantile >= 0 else None, args.seed)

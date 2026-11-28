@@ -105,7 +105,7 @@ khác nhau) tới ~20%, nên các khác biệt nhỏ hơn mức đó trong bản
    này là chỗ cho FAISS ở `[K6]`. Ở mốc 10M, `rolling`/`vectorize` của `tuned` chậm hơn mặc định 15–18%, cùng cỡ với
 dao động giữa các lượt chạy (§3.2).
 4. **`rolling_mean_60min` không hưởng lợi từ số partition.** Ngay cả `tuned` với 200 partition (bằng mặc định) vẫn
-   7,59 s so với 6,3–7,3 s của mặc định, nên phần chênh nằm ở các khóa khác (Kryo, `advisoryPartitionSizeInBytes`,
+   7,59 s so với 6,46–7,48 s (trung vị 7,33 s) của mặc định, nên phần chênh nằm ở các khóa khác (Kryo, `advisoryPartitionSizeInBytes`,
    Arrow, múi giờ phiên) mà lượt đo này chưa tách riêng. Với tác vụ này nên giữ mặc định hoặc `k1_baseline` + 48 partition.
 5. **`groupby_sensor_hour` không đổi** (≤ 1,7 s ở mọi cấu hình): kết quả chỉ 7.800 nhóm, shuffle rất nhỏ.
 6. **Khuyến nghị:** dùng `build_tuned_spark()` cho `[K6]` và mọi bước vectorize/export ở quy mô triệu dòng. `[D3]`
@@ -181,7 +181,7 @@ python 03_benchmarks_similarity/benchmark_scaling_pandas_vs_spark.py --driver-me
 ### 5.3. Lệnh cho `[K6]` Tuần 7 (stride 1, triệu vector)
 
 ```bash
-# METR-LA 6,28M vector; PEMS-BAY 16,9M vector. Bỏ Spark LSH ở quy mô này (mỗi truy vấn quét toàn bộ tập, §2.4.5).
+# METR-LA 6,28M vector; PEMS-BAY 16,9M vector. Bỏ Spark LSH ở quy mô này (mỗi truy vấn quét toàn bộ tập, xem 05_report_slides/draft_c2_spark_lsh_math.md §2.4.5).
 python 03_benchmarks_similarity/benchmark_knn_lsh_faiss.py --stride 1 --skip-lsh --driver-memory 2g \
     --input data/interim/metr_la_sample.parquet --sizes 1000000 all --hnsw-m 32
 python 03_benchmarks_similarity/benchmark_knn_lsh_faiss.py --stride 1 --skip-lsh --driver-memory 2g \
